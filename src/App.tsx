@@ -281,55 +281,27 @@ function PortfolioAssistant({ videos }: { videos: CreatorVideo[] }) {
     }
 
     try {
-      const localEndpoint = import.meta.env.VITE_LOCAL_AI_ENDPOINT;
-      const localModel = import.meta.env.VITE_LOCAL_AI_MODEL || "llama3.2";
+      const response = await fetch("/api/ai", {
+        body: JSON.stringify({
+          question: trimmedQuestion,
+          systemPrompt: getAssistantSystemPrompt(videos),
+          messages: messages.slice(-6),
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+      });
 
-      if (localEndpoint) {
-        const response = await fetch(localEndpoint, {
-          body: JSON.stringify({
-            model: localModel,
-            stream: false,
-            messages: [
-              {
-                role: "system",
-                content: getAssistantSystemPrompt(videos),
-              },
-              ...messages.slice(-6).map((message) => ({
-                role: message.role,
-                content: message.text,
-              })),
-              {
-                role: "user",
-                content: trimmedQuestion,
-              },
-            ],
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
-        });
-
-        if (!response.ok) {
-          throw new Error("Local assistant endpoint failed.");
-        }
-
-        const data = (await response.json()) as OllamaResponse;
-        const modelReply =
-          data.choices?.[0]?.message?.content ||
-          data.choices?.[0]?.text ||
-          data.message?.content ||
-          data.response;
-        setMessages((currentMessages) => [
-          ...currentMessages,
-          { role: "assistant", text: modelReply || getLocalAssistantReply(trimmedQuestion, videos) },
-        ]);
-      } else {
-        setMessages((currentMessages) => [
-          ...currentMessages,
-          { role: "assistant", text: getLocalAssistantReply(trimmedQuestion, videos) },
-        ]);
+      if (!response.ok) {
+        throw new Error("Portfolio assistant endpoint failed.");
       }
+
+      const data = (await response.json()) as { answer?: string };
+      setMessages((currentMessages) => [
+        ...currentMessages,
+        { role: "assistant", text: data.answer || getLocalAssistantReply(trimmedQuestion, videos) },
+      ]);
     } catch {
       setMessages((currentMessages) => [
         ...currentMessages,
@@ -1633,4 +1605,5 @@ function App() {
 }
 
 export default App;
+
 
