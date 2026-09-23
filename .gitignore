@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.npm-cache/
+.env
+.env.local
+wix_*.html
+wix_*.txt
+extracted_*.txt
+poppler_*.txt
+tmp/
+output/

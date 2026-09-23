@@ -1,0 +1,33 @@
+<svg width="1200" height="760" viewBox="0 0 1200 760" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="760" rx="38" fill="#071013"/>
+  <circle cx="1040" cy="90" r="260" fill="#1f8c9d" opacity="0.22"/>
+  <circle cx="160" cy="650" r="260" fill="#d8a45c" opacity="0.16"/>
+  <rect x="66" y="62" width="1068" height="636" rx="34" fill="#10191d" stroke="#2f454b" stroke-width="2"/>
+  <rect x="96" y="96" width="226" height="568" rx="26" fill="#071013"/>
+  <text x="132" y="148" fill="#d8a45c" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="800">AB Pharma</text>
+  <text x="132" y="190" fill="#d8e8e8" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700">Regulatory Transfer Hub</text>
+  <rect x="132" y="246" width="154" height="42" rx="21" fill="#d8a45c"/>
+  <text x="158" y="274" fill="#071013" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="800">New package</text>
+  <rect x="132" y="326" width="152" height="16" rx="8" fill="#385a61"/>
+  <rect x="132" y="370" width="118" height="16" rx="8" fill="#385a61"/>
+  <rect x="132" y="414" width="162" height="16" rx="8" fill="#385a61"/>
+  <rect x="132" y="458" width="106" height="16" rx="8" fill="#385a61"/>
+  <rect x="366" y="104" width="710" height="126" rx="28" fill="#162429"/>
+  <text x="406" y="154" fill="#f8f1e7" font-family="Arial, Helvetica, sans-serif" font-size="33" font-weight="900">Submission packaging dashboard</text>
+  <text x="406" y="195" fill="#9ab2b7" font-family="Arial, Helvetica, sans-serif" font-size="19">Region-aware routing, upload status and audit-ready document transfer.</text>
+  <rect x="366" y="270" width="210" height="142" rx="24" fill="#0c1518" stroke="#28454c"/>
+  <text x="398" y="322" fill="#d8a45c" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Packages today</text>
+  <text x="398" y="372" fill="#f8f1e7" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900">18</text>
+  <rect x="614" y="270" width="210" height="142" rx="24" fill="#0c1518" stroke="#28454c"/>
+  <text x="646" y="322" fill="#d8a45c" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">In progress</text>
+  <text x="646" y="372" fill="#f8f1e7" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900">06</text>
+  <rect x="862" y="270" width="214" height="142" rx="24" fill="#0c1518" stroke="#28454c"/>
+  <text x="894" y="322" fill="#d8a45c" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="800">Regions</text>
+  <text x="894" y="372" fill="#f8f1e7" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="900">04</text>
+  <rect x="366" y="452" width="710" height="174" rx="28" fill="#0c1518" stroke="#28454c"/>
+  <text x="406" y="506" fill="#f8f1e7" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="900">Latest submissions</text>
+  <rect x="406" y="544" width="620" height="1" fill="#29454b"/>
+  <rect x="406" y="575" width="168" height="18" rx="9" fill="#5a7c83"/>
+  <rect x="628" y="575" width="106" height="18" rx="9" fill="#d8a45c"/>
+  <rect x="782" y="575" width="164" height="18" rx="9" fill="#5a7c83"/>
+</svg>
