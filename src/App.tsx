@@ -115,6 +115,39 @@ const abPharmaCompetitors = [
   },
 ];
 
+const mayBeJourney = [
+  ["01", "Tell", "Speak naturally or type the situation without turning it into a formal prompt."],
+  ["02", "Understand", "Grounded keywords emerge only after capture is complete, using the person's own language."],
+  ["03", "Transform", "The may.be wordmark dissolves until its centred dot becomes the decision seed."],
+  ["04", "Explore", "Organic branches reveal credible paths and keep every choice connected to one living tree."],
+  ["05", "Return", "Undo restores the previous fork and camera position, so exploration never feels like commitment."],
+];
+
+const mayBePrinciples = [
+  ["Voice first", "Speaking is the primary entry point; typing remains a complete, private fallback."],
+  ["Grounded meaning", "AI interpretation stays visibly connected to user facts, evidence, assumptions, and unknowns."],
+  ["Spatial continuity", "Nodes and paths share one world coordinate system; the chosen object is the object that moves."],
+  ["Variable choices", "The system reveals two to six credible branches instead of forcing every decision into a binary."],
+  ["Reversible exploration", "Following a branch means inspecting it, not committing to it. Undo always preserves context."],
+  ["Accessible motion", "Reduced-motion, keyboard, touch, screen-reader, and high-contrast paths carry the same meaning."],
+];
+
+const mayBeUserStories = [
+  ["Capture", "Start with voice, use text instead, recover from microphone problems, or restart at any time."],
+  ["Interpretation", "See calm processing feedback and recognise specific words, factors, and named alternatives."],
+  ["Transformation", "Cross a short emotional passage before the logo's centred dot grows into the decision."],
+  ["Exploration", "Inspect branch summaries, follow consequences, and fit larger forks without losing readability."],
+  ["Trust and recovery", "Undo one step, distinguish facts from assumptions, and use every path accessibly."],
+];
+
+const mayBePalette = [
+  ["Canvas", "#F5F0E7"],
+  ["Surface", "#FFFAF2"],
+  ["Primary ink", "#332119"],
+  ["Muted text", "#6F625A"],
+  ["Warm accent", "#B47B54"],
+];
+
 const DesignImageIcon = () => (
   <svg aria-hidden="true" viewBox="0 0 24 24">
     <rect x="4" y="5" width="16" height="12" rx="2.5" />
@@ -649,6 +682,7 @@ function App() {
     [activeVideoId, videos],
   );
   const activeDesignStory = designStories[activeDesignIndex] ?? designStories[0];
+  const isMayBeStory = activeDesignStory.title === "may.be";
   const isAbPharmaStory = activeDesignStory.title === "AB Pharma";
   const activeTitle = activeVideo?.displayTitle ?? activeVideo?.title;
   const activeThumbnail =
@@ -952,7 +986,134 @@ function App() {
               <span aria-hidden="true">-&gt;</span>
             </a>
           ) : null}
+          {activeDesignStory.figmaUrl ? (
+            <a className="primaryAction caseStudyFigma" href={activeDesignStory.figmaUrl} target="_blank" rel="noreferrer">
+              Open Figma design
+              <span aria-hidden="true">-&gt;</span>
+            </a>
+          ) : null}
         </section>
+        {isMayBeStory ? (
+          <section className="mayBeStory" aria-label="may.be product design case study">
+            <article className="mayBeOpening">
+              <div>
+                <p className="streamLabel">Product Intent</p>
+                <h2>See where every choice could take you.</h2>
+              </div>
+              <div>
+                <p>
+                  may.be is a mobile-first decision-exploration experience. A person describes where
+                  they are stuck, the system extracts grounded meaning, distils the central decision,
+                  and reveals a spatial tree of credible alternatives.
+                </p>
+                <p>
+                  The key design requirement is continuity: one story becomes one decision seed and
+                  grows into one persistent tree—not a sequence of cards, reports, or dashboard panels.
+                </p>
+              </div>
+            </article>
+
+            <section className="mayBeSection" aria-labelledby="may-be-journey-title">
+              <div className="mayBeSectionHeading">
+                <p className="streamLabel">Experience Journey</p>
+                <h2 id="may-be-journey-title">One thought owns the screen at a time.</h2>
+                <p>The product moves from expression to meaning, then into reversible exploration.</p>
+              </div>
+              <div className="mayBeJourney">
+                {mayBeJourney.map(([number, title, description]) => (
+                  <article key={number}>
+                    <span>{number}</span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="mayBeFigma" aria-labelledby="may-be-figma-title">
+              <div className="mayBeSectionHeading">
+                <p className="streamLabel">Figma Design</p>
+                <h2 id="may-be-figma-title">The interaction shown as a cinematic mobile flow.</h2>
+                <p>
+                  The screens connect invitation, listening, keyword meaning, decision transformation,
+                  branching, and conversational history in one warm, minimal visual system.
+                </p>
+              </div>
+              <div className="mayBeFigmaFrame">
+                <img src="/design/may-be-figma-screens.svg" alt="may.be Figma mobile flow showing invitation, listening, meaning, and decision-tree screens" />
+              </div>
+            </section>
+
+            <section className="mayBeSection mayBePrinciples" aria-labelledby="may-be-principles-title">
+              <div className="mayBeSectionHeading">
+                <p className="streamLabel">Experience Principles</p>
+                <h2 id="may-be-principles-title">Calm, grounded, continuous, and human.</h2>
+              </div>
+              <div className="mayBeCardGrid">
+                {mayBePrinciples.map(([title, description]) => (
+                  <article key={title}>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="mayBeSection mayBeStories" aria-labelledby="may-be-stories-title">
+              <div className="mayBeSectionHeading">
+                <p className="streamLabel">User Story Architecture</p>
+                <h2 id="may-be-stories-title">Twenty stories organised around five human needs.</h2>
+                <p>Each epic translates the product idea into observable, testable behaviour.</p>
+              </div>
+              <div className="mayBeStoryRows">
+                {mayBeUserStories.map(([title, description], index) => (
+                  <article key={title}>
+                    <span>0{index + 1}</span>
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            <section className="mayBeSystem" aria-labelledby="may-be-system-title">
+              <div className="mayBeSectionHeading">
+                <p className="streamLabel">Design System</p>
+                <h2 id="may-be-system-title">Warm neutrals carry the story. Brown marks the decision.</h2>
+                <p>
+                  The system uses native typography, generous spacing, minimum 44-point targets, a
+                  restrained component set, and motion that explains cause rather than decorating it.
+                </p>
+              </div>
+              <div className="mayBePalette">
+                {mayBePalette.map(([name, value]) => (
+                  <div key={name}>
+                    <span style={{ background: value }} />
+                    <strong>{name}</strong>
+                    <small>{value}</small>
+                  </div>
+                ))}
+              </div>
+              <div className="mayBeSystemDetails">
+                <article><span>Type</span><strong>SF Pro / system sans</strong><p>Sentence case, short labels, Dynamic Type, and wrapping before shrinking.</p></article>
+                <article><span>Shape</span><strong>Circles and soft surfaces</strong><p>Decision seeds and branches stay tactile without becoming card-heavy.</p></article>
+                <article><span>Motion</span><strong>Cause and continuity</strong><p>Paths draw before nodes arrive; the centred logo dot grows into the decision.</p></article>
+                <article><span>Access</span><strong>Equivalent paths</strong><p>VoiceOver, Reduce Motion, keyboard, touch, and increased contrast retain the full journey.</p></article>
+              </div>
+            </section>
+
+            <section className="mayBeOutcome" aria-labelledby="may-be-outcome-title">
+              <p className="streamLabel">MVP Outcome</p>
+              <h2 id="may-be-outcome-title">A coherent journey, not an answer machine.</h2>
+              <p>
+                The MVP is complete when a person can speak or type a real situation, recognise their
+                meaning in the interpretation, explore a variable decision tree, inspect consequences,
+                and return to an earlier fork without losing context. It does not predict outcomes,
+                assign probabilities, or pretend generated possibilities are facts.
+              </p>
+            </section>
+          </section>
+        ) : null}
         {isAbPharmaStory ? (
           <section className="abStoryDeck" aria-label="AB Pharma refreshed UX story">
             <div className="abStoryGrid">
@@ -1064,7 +1225,7 @@ function App() {
             </div>
           </section>
         ) : null}
-        <section className="caseStudyViewer">
+        {!isMayBeStory ? <section className="caseStudyViewer">
           {activeDesignStory.pageImages?.length ? (
             <div className="caseStudyPages" aria-label={`${activeDesignStory.title} full case study`}>
               {activeDesignStory.pageImages.map((pageImage, index) => (
@@ -1082,7 +1243,7 @@ function App() {
               <strong>Coming soon</strong>
             </div>
           )}
-        </section>
+        </section> : null}
       </main>
     );
   }
@@ -1395,7 +1556,8 @@ function App() {
           <h2>User stories and product design</h2>
           <p>
             Selected user stories from Basil's portfolio, presented as focused case-study thumbnails.
-            Spaid and Playmore are available now, with one space reserved for the next story.
+            Explore may.be, Spaid, Playmore, and AB Pharma through focused case studies, design
+            documents, and editable Figma work.
           </p>
           <a className="textLink" href={links.designStories} target="_blank" rel="noreferrer">
             Current user stories

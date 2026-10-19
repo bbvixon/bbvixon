@@ -8,6 +8,7 @@ export type DesignStory = {
   documentUrl?: string;
   redesignDocumentUrl?: string;
   pageImages?: string[];
+  figmaUrl?: string;
   status?: "ready" | "placeholder";
 };
 
@@ -26,6 +27,20 @@ export type CreatorVideo = {
 };
 
 export const designStories: DesignStory[] = [
+  {
+    title: "may.be",
+    role: "AI Product Design Story",
+    summary:
+      "A voice-first decision-making experience that turns a difficult human situation into an explorable map of possible paths.",
+    outcome:
+      "The design replaces dashboards and advice cards with a calm, cinematic flow: listen, surface meaning, reveal the decision seed, and grow an organic choice tree.",
+    tags: ["AI UX", "Voice interface", "Decision mapping"],
+    thumbnailUrl: "/design/may-be-figma-screens.svg",
+    documentUrl: "/design/may-be-figma-screens.svg",
+    figmaUrl:
+      "https://www.figma.com/design/077S09CY8D9ysDLe9udaed/Mobile-App-Wireframes-and-UI-Design?node-id=6-240&t=XD4GgFBy4oUCXGMY-0",
+    status: "ready",
+  },
   {
     title: "Spaid",
     role: "UX Case Study",
