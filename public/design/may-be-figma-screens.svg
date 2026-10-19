@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1510" height="2020" viewBox="0 0 1510 2020">
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="42%" r="72%">
+      <stop offset="0" stop-color="#fffdf9"/><stop offset="1" stop-color="#f5f0e7"/>
+    </radialGradient>
+    <radialGradient id="orb" cx="34%" cy="28%" r="72%">
+      <stop offset="0" stop-color="#e6bd91"/><stop offset="0.62" stop-color="#8b5940"/><stop offset="1" stop-color="#332119"/>
+    </radialGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffaf2" stop-opacity=".3"/><stop offset="1" stop-color="#eadfd1" stop-opacity=".82"/>
+    </linearGradient>
+    <filter id="softShadow" x="-50%" y="-50%" width="200%" height="220%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#3b271e" flood-opacity=".11"/>
+    </filter>
+    <style>
+      .label{font-family:'Segoe UI',sans-serif;font-size:15px;font-weight:600;letter-spacing:.08em;fill:#7e7067}
+      .frame{fill:url(#paper);stroke:#d8cec2;stroke-width:1}
+      .brand{font-family:'Segoe UI',sans-serif;font-size:17px;font-weight:650;letter-spacing:-.8px;fill:#332119}
+      .h1{font-family:'Segoe UI',sans-serif;font-size:48px;font-weight:520;letter-spacing:-2.8px;fill:#332119}
+      .h2{font-family:'Segoe UI',sans-serif;font-size:37px;font-weight:520;letter-spacing:-2px;fill:#332119}
+      .body{font-family:'Segoe UI',sans-serif;font-size:18px;font-weight:400;fill:#7e7067}
+      .small{font-family:'Segoe UI',sans-serif;font-size:13px;font-weight:400;fill:#7e7067}
+      .nodeText{font-family:'Segoe UI',sans-serif;font-size:16px;font-weight:540;text-anchor:middle;fill:#332119}
+      .nodeTextLight{font-family:'Segoe UI',sans-serif;font-size:15px;font-weight:540;text-anchor:middle;fill:#fffaf2}
+      .hair{fill:none;stroke:#332119;stroke-width:1.45;stroke-linecap:round}
+      .node{fill:#fffaf2;stroke:#332119;stroke-opacity:.16;filter:url(#softShadow)}
+      .current{fill:#332119;stroke:none;filter:url(#softShadow)}
+      .halo{fill:#b47b54;fill-opacity:.09}
+      .pill{fill:#fffaf2;stroke:#332119;stroke-opacity:.12;filter:url(#softShadow)}
+    </style>
+  </defs>
+
+  <g id="may-be-v16-matched">
+    <text class="label" x="40" y="28">MAY.BE · V16 MATCHED MOBILE FLOW</text>
+
+    <!-- 01 Landing -->
+    <g id="v16-01-landing" transform="translate(40 60)">
+      <text class="label" x="0" y="-14">01 · INVITATION</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <g text-anchor="middle">
+        <text class="h1" x="215" y="190">Hi, there.</text>
+        <text class="body" x="215" y="226">Tell me where you’re stuck.</text>
+      </g>
+      <circle cx="215" cy="438" r="90" fill="none" stroke="#332119" stroke-opacity=".055"/>
+      <circle cx="215" cy="438" r="76" fill="none" stroke="#332119" stroke-opacity=".085"/>
+      <circle cx="215" cy="438" r="61" fill="#332119" filter="url(#softShadow)"/>
+      <path d="M215 409a14 14 0 0 0-14 14v22a14 14 0 0 0 28 0v-22a14 14 0 0 0-14-14Zm-25 34a25 25 0 0 0 50 0M215 470v13m-12 0h24" fill="none" stroke="#fffaf2" stroke-width="4" stroke-linecap="round"/>
+      <rect x="24" y="815" width="382" height="57" rx="19" fill="#fffaf2" fill-opacity=".78" stroke="#332119" stroke-opacity=".12"/>
+      <text class="small" x="42" y="849">Type your situation…</text>
+      <rect x="354" y="823" width="41" height="41" rx="13" fill="#332119"/>
+      <text x="374.5" y="851" text-anchor="middle" font-size="23" fill="#fffaf2">↑</text>
+    </g>
+
+    <!-- 02 Capture -->
+    <g id="v16-02-capture" transform="translate(540 60)">
+      <text class="label" x="0" y="-14">02 · LISTENING / CAPTURE</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <circle cx="215" cy="405" r="105" fill="none" stroke="#714930" stroke-opacity=".08"/>
+      <circle cx="215" cy="405" r="84" fill="none" stroke="#714930" stroke-opacity=".13"/>
+      <circle cx="215" cy="405" r="63" fill="none" stroke="#714930" stroke-opacity=".2"/>
+      <circle cx="215" cy="405" r="35" fill="url(#orb)" filter="url(#softShadow)"/>
+      <text class="body" x="215" y="540" text-anchor="middle">I’m listening</text>
+      <path d="M118 610c20 15 32-14 51 0s31 13 48-1 31-13 48 1 33 14 48-1" fill="none" stroke="#b47b54" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+      <text class="small" x="215" y="660" text-anchor="middle">Finish speaking to reveal what matters.</text>
+    </g>
+
+    <!-- 03 Insights -->
+    <g id="v16-03-insights" transform="translate(1040 60)">
+      <text class="label" x="0" y="-14">03 · MEANING</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <text class="small" x="215" y="142" text-anchor="middle">Words lifted from what you actually said</text>
+      <g>
+        <rect class="pill" x="57" y="246" width="116" height="46" rx="23"/><text class="small" x="115" y="274" text-anchor="middle" fill="#332119">better role</text>
+        <rect class="pill" x="230" y="199" width="132" height="46" rx="23"/><text class="small" x="296" y="227" text-anchor="middle" fill="#332119">Bangalore</text>
+        <rect class="pill" x="146" y="338" width="139" height="46" rx="23"/><text class="small" x="215" y="366" text-anchor="middle" fill="#332119">family</text>
+        <rect class="pill" x="51" y="415" width="127" height="46" rx="23"/><text class="small" x="114" y="443" text-anchor="middle" fill="#332119">growth</text>
+        <rect class="pill" x="250" y="432" width="128" height="46" rx="23"/><text class="small" x="314" y="460" text-anchor="middle" fill="#332119">distance</text>
+      </g>
+      <ellipse cx="215" cy="682" rx="130" ry="25" fill="#fffaf2" fill-opacity=".82" stroke="#332119" stroke-opacity=".13"/>
+      <path d="M85 682c0 74 57 116 130 116s130-42 130-116" fill="url(#bowl)" stroke="#332119" stroke-opacity=".13"/>
+      <ellipse cx="215" cy="692" rx="76" ry="32" fill="#b47b54" fill-opacity=".18"/>
+    </g>
+
+    <!-- 04 Tree -->
+    <g id="v16-04-tree" transform="translate(40 1040)">
+      <text class="label" x="0" y="-14">04 · BRANCHING</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <text class="small" x="378" y="42" text-anchor="end">↶ Undo</text>
+      <circle class="halo" cx="215" cy="260" r="76"/>
+      <circle class="current" cx="215" cy="260" r="61"/>
+      <text class="nodeTextLight" x="215" y="253"><tspan x="215">Move to</tspan><tspan x="215" dy="18">Bangalore?</tspan></text>
+      <path class="hair" d="M215 321C215 397 116 402 116 486"/>
+      <path class="hair" d="M215 321C215 397 314 402 314 486"/>
+      <circle class="node" cx="116" cy="542" r="54"/><text class="nodeText" x="116" y="548">Go</text>
+      <circle class="node" cx="314" cy="542" r="54"/><text class="nodeText" x="314" y="548">Stay</text>
+      <text class="small" x="215" y="790" text-anchor="middle">Hover to understand · touch to follow</text>
+      <text class="small" x="215" y="833" text-anchor="middle" fill="#b47b54">Every path opens another may.be.</text>
+    </g>
+
+    <!-- 05 Detail / expanded branch -->
+    <g id="v16-05-detail" transform="translate(540 1040)">
+      <text class="label" x="0" y="-14">05 · PATH DETAIL</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <text class="small" x="378" y="42" text-anchor="end">↶ Undo</text>
+      <path d="M70 710C98 640 130 577 206 516" fill="none" stroke="#332119" stroke-opacity=".15" stroke-width="1.45"/>
+      <circle cx="70" cy="710" r="35" fill="#fffaf2" stroke="#332119" stroke-opacity=".12" opacity=".42"/>
+      <text class="small" x="70" y="715" text-anchor="middle" opacity=".42">Stay</text>
+      <circle class="halo" cx="215" cy="345" r="76"/>
+      <circle class="current" cx="215" cy="345" r="61"/>
+      <text class="nodeTextLight" x="215" y="351">Go</text>
+      <path class="hair" d="M215 406C215 474 112 488 112 576"/>
+      <path class="hair" d="M215 406C215 474 318 488 318 576"/>
+      <circle class="node" cx="112" cy="632" r="54"/><text class="nodeText" x="112" y="624"><tspan x="112">Accept</tspan><tspan x="112" dy="18">now</tspan></text>
+      <circle class="node" cx="318" cy="632" r="54"/><text class="nodeText" x="318" y="624"><tspan x="318">Negotiate</tspan><tspan x="318" dy="18">first</tspan></text>
+      <rect x="50" y="755" width="330" height="72" rx="18" fill="#332119"/>
+      <text x="215" y="784" text-anchor="middle" font-size="12" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#fffaf2"><tspan x="215">Change the conditions before committing:</tspan><tspan x="215" dy="18">remote weeks, start date, and travel home.</tspan></text>
+    </g>
+
+    <!-- 06 Conversational history -->
+    <g id="v16-06-history" transform="translate(1040 1040)">
+      <text class="label" x="0" y="-14">06 · CONVERSATIONAL HISTORY</text>
+      <rect class="frame" width="430" height="900" rx="42"/>
+      <text class="brand" x="24" y="42">may.be</text>
+      <text class="h2" x="30" y="132">Where have I</text>
+      <text class="h2" x="30" y="174">been stuck?</text>
+      <text class="body" x="30" y="215">Ask naturally. No dashboard required.</text>
+      <g>
+        <rect x="82" y="274" width="318" height="74" rx="24" fill="#332119"/>
+        <text x="104" y="305" font-size="14" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#fffaf2"><tspan x="104">Show me the decisions where</tspan><tspan x="104" dy="20">family mattered most.</tspan></text>
+        <rect x="30" y="374" width="346" height="180" rx="26" fill="#fffaf2" stroke="#332119" stroke-opacity=".11" filter="url(#softShadow)"/>
+        <text x="52" y="410" font-size="14" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#332119"><tspan x="52">Three paths carried that tension.</tspan><tspan x="52" dy="27" fill="#7e7067">Move to Bangalore?</tspan><tspan x="52" dy="23" fill="#7e7067">Take the overseas role?</tspan><tspan x="52" dy="23" fill="#7e7067">Stay close to home?</tspan></text>
+        <circle cx="333" cy="499" r="19" fill="#b47b54" fill-opacity=".14"/><circle cx="333" cy="499" r="5" fill="#b47b54"/>
+      </g>
+      <rect x="24" y="815" width="382" height="57" rx="19" fill="#fffaf2" fill-opacity=".86" stroke="#332119" stroke-opacity=".12"/>
+      <text class="small" x="42" y="849">Ask about a previous choice…</text>
+      <rect x="354" y="823" width="41" height="41" rx="13" fill="#332119"/>
+      <text x="374.5" y="851" text-anchor="middle" font-size="23" fill="#fffaf2">↑</text>
+    </g>
+  </g>
+</svg>

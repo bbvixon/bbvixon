@@ -1764,6 +1764,328 @@ h3 {
   margin-top: 22px;
 }
 
+.caseStudyFigma {
+  margin-top: 22px;
+}
+
+.mayBeStory {
+  display: grid;
+  gap: clamp(72px, 9vw, 128px);
+  margin: clamp(52px, 8vw, 96px) auto 32px;
+  max-width: 1180px;
+}
+
+.mayBeOpening {
+  align-items: start;
+  border-bottom: 1px solid rgba(244, 238, 229, 0.14);
+  display: grid;
+  gap: clamp(32px, 7vw, 96px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  padding-bottom: clamp(48px, 7vw, 80px);
+}
+
+.mayBeOpening h2,
+.mayBeSectionHeading h2,
+.mayBeOutcome h2 {
+  font-size: clamp(2.3rem, 5vw, 4.8rem);
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  margin: 12px 0 0;
+}
+
+.mayBeOpening > div:last-child {
+  display: grid;
+  gap: 18px;
+}
+
+.mayBeOpening p,
+.mayBeSectionHeading > p:not(.streamLabel),
+.mayBeCardGrid p,
+.mayBeStoryRows p,
+.mayBeSystemDetails p,
+.mayBeOutcome > p:not(.streamLabel) {
+  color: rgba(244, 238, 229, 0.7);
+  line-height: 1.72;
+}
+
+.mayBeSection,
+.mayBeFigma,
+.mayBeSystem {
+  display: grid;
+  gap: clamp(32px, 5vw, 58px);
+}
+
+.mayBeSectionHeading {
+  max-width: 820px;
+}
+
+.mayBeSectionHeading > p:not(.streamLabel) {
+  font-size: 1.04rem;
+  margin-top: 20px;
+  max-width: 690px;
+}
+
+.mayBeJourney {
+  counter-reset: journey;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.mayBeJourney article {
+  border-left: 1px solid rgba(244, 238, 229, 0.16);
+  min-height: 250px;
+  padding: 4px clamp(16px, 2.3vw, 28px) 0;
+}
+
+.mayBeJourney article:last-child {
+  border-right: 1px solid rgba(244, 238, 229, 0.16);
+}
+
+.mayBeJourney article > span,
+.mayBeStoryRows article > span,
+.mayBeSystemDetails article > span {
+  color: #d8a45c;
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  margin-bottom: 46px;
+  text-transform: uppercase;
+}
+
+.mayBeJourney h3,
+.mayBeCardGrid h3,
+.mayBeStoryRows h3 {
+  font-size: clamp(1.25rem, 2vw, 1.7rem);
+  letter-spacing: -0.035em;
+  margin-bottom: 12px;
+}
+
+.mayBeJourney p {
+  color: rgba(244, 238, 229, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.62;
+}
+
+.mayBeFigmaFrame {
+  background: #f5f0e7;
+  border: 1px solid rgba(180, 123, 84, 0.32);
+  border-radius: 28px;
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.32);
+  max-height: min(74vh, 780px);
+  overflow: auto;
+  padding: clamp(14px, 2vw, 24px);
+}
+
+.mayBeFigmaFrame img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.mayBeCardGrid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background: rgba(244, 238, 229, 0.12);
+  border: 1px solid rgba(244, 238, 229, 0.12);
+}
+
+.mayBeCardGrid article {
+  background: #090909;
+  min-height: 220px;
+  padding: clamp(24px, 4vw, 38px);
+}
+
+.mayBeCardGrid p {
+  margin-top: 48px;
+}
+
+.mayBeStoryRows {
+  border-top: 1px solid rgba(244, 238, 229, 0.14);
+}
+
+.mayBeStoryRows article {
+  align-items: start;
+  border-bottom: 1px solid rgba(244, 238, 229, 0.14);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 64px minmax(150px, 0.65fr) minmax(0, 1.35fr);
+  padding: 28px 0;
+}
+
+.mayBeStoryRows article > span {
+  margin: 5px 0 0;
+}
+
+.mayBeStoryRows h3 {
+  margin: 0;
+}
+
+.mayBeSystem {
+  background: #f5f0e7;
+  border-radius: 28px;
+  color: #332119;
+  padding: clamp(32px, 6vw, 72px);
+}
+
+.mayBeSystem .streamLabel {
+  color: #8c5a3c;
+}
+
+.mayBeSystem .mayBeSectionHeading > p:not(.streamLabel),
+.mayBeSystemDetails p {
+  color: #6f625a;
+}
+
+.mayBePalette {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.mayBePalette > div {
+  border-top: 1px solid rgba(51, 33, 25, 0.16);
+  padding-top: 16px;
+}
+
+.mayBePalette > div > span {
+  border: 1px solid rgba(51, 33, 25, 0.16);
+  border-radius: 50%;
+  display: block;
+  height: clamp(54px, 7vw, 82px);
+  margin-bottom: 18px;
+  width: clamp(54px, 7vw, 82px);
+}
+
+.mayBePalette strong,
+.mayBePalette small {
+  display: block;
+}
+
+.mayBePalette small {
+  color: #6f625a;
+  margin-top: 4px;
+}
+
+.mayBeSystemDetails {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mayBeSystemDetails article {
+  border-top: 1px solid rgba(51, 33, 25, 0.18);
+  padding-top: 18px;
+}
+
+.mayBeSystemDetails article > span {
+  color: #8c5a3c;
+  margin-bottom: 12px;
+}
+
+.mayBeSystemDetails strong {
+  display: block;
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.mayBeOutcome {
+  border-bottom: 1px solid rgba(244, 238, 229, 0.14);
+  border-top: 1px solid rgba(244, 238, 229, 0.14);
+  padding: clamp(52px, 8vw, 96px) 0;
+}
+
+.mayBeOutcome > p:not(.streamLabel) {
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  margin-top: 28px;
+  max-width: 850px;
+}
+
+@media (max-width: 900px) {
+  .mayBeJourney {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mayBeJourney article,
+  .mayBeJourney article:last-child {
+    border-bottom: 1px solid rgba(244, 238, 229, 0.16);
+    border-right: 0;
+  }
+
+  .mayBeCardGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .mayBeOpening,
+  .mayBeStoryRows article {
+    grid-template-columns: 1fr;
+  }
+
+  .mayBeJourney,
+  .mayBeCardGrid,
+  .mayBeSystemDetails {
+    grid-template-columns: 1fr;
+  }
+
+  .mayBeJourney article {
+    min-height: 0;
+    padding: 24px 18px;
+  }
+
+  .mayBeJourney article > span,
+  .mayBeCardGrid p {
+    margin-bottom: 18px;
+    margin-top: 18px;
+  }
+
+  .mayBeStoryRows article > span {
+    margin: 0;
+  }
+
+  .mayBePalette {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 16px;
+  }
+}
+
+[data-theme="light"] .mayBeOpening,
+[data-theme="light"] .mayBeOutcome,
+[data-theme="light"] .mayBeStoryRows,
+[data-theme="light"] .mayBeStoryRows article {
+  border-color: rgba(51, 33, 25, 0.16);
+}
+
+[data-theme="light"] .mayBeOpening p,
+[data-theme="light"] .mayBeSectionHeading > p:not(.streamLabel),
+[data-theme="light"] .mayBeStoryRows p,
+[data-theme="light"] .mayBeOutcome > p:not(.streamLabel) {
+  color: rgba(51, 33, 25, 0.72);
+}
+
+[data-theme="light"] .mayBeJourney article,
+[data-theme="light"] .mayBeJourney article:last-child {
+  border-color: rgba(51, 33, 25, 0.16);
+}
+
+[data-theme="light"] .mayBeJourney p {
+  color: rgba(51, 33, 25, 0.66);
+}
+
+[data-theme="light"] .mayBeCardGrid {
+  background: rgba(51, 33, 25, 0.12);
+  border-color: rgba(51, 33, 25, 0.12);
+}
+
+[data-theme="light"] .mayBeCardGrid article {
+  background: #fffaf2;
+}
+
+[data-theme="light"] .mayBeCardGrid p {
+  color: rgba(51, 33, 25, 0.7);
+}
+
 .abStoryDeck {
   display: grid;
   gap: 22px;

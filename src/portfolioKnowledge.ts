@@ -25,6 +25,16 @@ Design section:
 - The portfolio should highlight selected user stories rather than every project.
 - Current design direction: user stories, UX thinking, product flows, interface decisions, design rationale, and human-centered problem solving.
 
+User story: may.be.
+- Product type: Voice-first AI decision-exploration experience for mobile.
+- Product promise: Help a person see plausible paths through a difficult decision without pretending to predict the future.
+- Core journey: Speak or type a situation, see grounded keywords emerge, watch the may.be dot become the decision seed, then explore a continuous spatial tree of credible choices.
+- Design principles: One focal action per scene, AI interpretation connected to the person's own language, variable branch counts, reversible exploration, and motion that explains continuity.
+- Visual system: Warm cream canvas, deep brown decision anchors, native system typography, circular nodes, fine organic paths, restrained shadows, and generous negative space.
+- Trust model: Separate user facts, evidence, assumptions, and human unknowns. Do not present generated possibilities as predictions or probabilities.
+- Accessibility: Support keyboard, touch, screen readers, Dynamic Type, Increased Contrast, Reduce Transparency, and Reduce Motion without removing meaning.
+- Portfolio presentation: The source user-story, product specification, design-system content, and Figma screens are presented as sections within one case-study page rather than as downloadable documents.
+
 User story: Playmore.
 - Product type: Sports community app.
 - Tagline: Community Starts Here.
