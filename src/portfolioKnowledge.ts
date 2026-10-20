@@ -83,6 +83,12 @@ Creator section:
 - Movie titles are displayed up to the first "|" or "-" in the YouTube title.
 - The assistant can discuss Basil's direction works, creator identity, and the current cinema experience.
 
+Apps section:
+- The Apps page presents Basil's custom applications in an app-store-inspired collection.
+- may.be is a calm, voice-first decision companion that helps people express where they feel stuck and explore possible paths.
+- Emoti-Games is a playful Figma Make browser experience that welcomes the player by name and turns emotional reflection into a game-like moment.
+- Apps open in their own browser tabs and the collection can grow through the portfolio CMS.
+
 AI assistant:
 - The portfolio includes BB AI, a local AI assistant.
 - It runs through Bionic AI using the local OpenAI-compatible endpoint proxied by Vite.

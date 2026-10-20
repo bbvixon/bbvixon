@@ -89,9 +89,32 @@ const mapStoryRow = (row) => ({
   updatedAt: row.updated_at,
 });
 
+const mapAppRow = (row) => ({
+  slug: row.slug,
+  title: row.title,
+  tagline: row.tagline,
+  description: row.description,
+  url: row.url,
+  iconUrl: row.icon_url,
+  category: row.category,
+  platform: row.platform,
+  published: row.published,
+  sortOrder: row.sort_order,
+  updatedAt: row.updated_at,
+});
+
 const optionalText = (value) => {
   const text = String(value ?? "").trim();
   return text || null;
+};
+
+const isHttpUrl = (value) => {
+  try {
+    const parsed = new URL(value);
+    return parsed.protocol === "https:" || parsed.protocol === "http:";
+  } catch {
+    return false;
+  }
 };
 
 const normalizeStorySections = (value) => {
@@ -234,6 +257,105 @@ app.put("/api/admin/design-stories/:slug", requireCmsAdmin, async (request, resp
     response.status(500).json({
       ok: false,
       message: error instanceof Error ? error.message : "Could not save design story.",
+    });
+  }
+});
+
+app.get("/api/apps", async (_request, response) => {
+  response.set("Cache-Control", "no-store");
+
+  if (!process.env.DATABASE_URL) {
+    response.json({ ok: true, apps: [] });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      "select * from portfolio_apps order by sort_order asc, updated_at desc",
+    );
+    response.json({
+      ok: true,
+      apps: result.rows.filter((row) => row.published).map(mapAppRow),
+      hiddenSlugs: result.rows.filter((row) => !row.published).map((row) => row.slug),
+    });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not load apps.",
+    });
+  }
+});
+
+app.get("/api/admin/apps", requireCmsAdmin, async (_request, response) => {
+  response.set("Cache-Control", "no-store");
+
+  try {
+    const result = await pool.query(
+      "select * from portfolio_apps order by sort_order asc, updated_at desc",
+    );
+    response.json({ ok: true, apps: result.rows.map(mapAppRow) });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not load CMS apps.",
+    });
+  }
+});
+
+app.put("/api/admin/apps/:slug", requireCmsAdmin, async (request, response) => {
+  const slug = String(request.params.slug ?? "").trim().toLowerCase();
+  const body = request.body ?? {};
+
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) {
+    response.status(400).json({ ok: false, message: "Use a lowercase URL slug." });
+    return;
+  }
+
+  const title = String(body.title ?? "").trim().slice(0, 160);
+  const tagline = String(body.tagline ?? "").trim().slice(0, 240);
+  const description = String(body.description ?? "").trim().slice(0, 2000);
+  const url = String(body.url ?? "").trim().slice(0, 2000);
+  const iconUrl = String(body.iconUrl ?? "").trim().slice(0, 2000);
+  const category = String(body.category ?? "").trim().slice(0, 120);
+  const platform = String(body.platform ?? "").trim().slice(0, 120);
+  const published = body.published !== false;
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Math.trunc(Number(body.sortOrder)) : 0;
+
+  if (!title || !tagline || !description || !url) {
+    response.status(400).json({ ok: false, message: "Title, tagline, description, and app URL are required." });
+    return;
+  }
+
+  if (!isHttpUrl(url) || (iconUrl && !iconUrl.startsWith("/") && !isHttpUrl(iconUrl))) {
+    response.status(400).json({ ok: false, message: "Use a valid HTTP(S) app URL and icon URL." });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      `insert into portfolio_apps (
+         slug, title, tagline, description, url, icon_url, category, platform,
+         published, sort_order, updated_at
+       ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, now())
+       on conflict (slug) do update set
+         title = excluded.title,
+         tagline = excluded.tagline,
+         description = excluded.description,
+         url = excluded.url,
+         icon_url = excluded.icon_url,
+         category = excluded.category,
+         platform = excluded.platform,
+         published = excluded.published,
+         sort_order = excluded.sort_order,
+         updated_at = now()
+       returning *`,
+      [slug, title, tagline, description, url, iconUrl, category, platform, published, sortOrder],
+    );
+    response.json({ ok: true, app: mapAppRow(result.rows[0]) });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not save app.",
     });
   }
 });

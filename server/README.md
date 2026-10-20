@@ -50,6 +50,7 @@ This creates:
 - `contact_messages`
 - `assistant_logs`
 - `design_stories`
+- `portfolio_apps`
 
 ## Design stories CMS
 
@@ -68,6 +69,8 @@ https://your-domain.example/#cms
 Enter the admin key to load the editor. Saving a story writes it to PostgreSQL and updates the public portfolio through `/api/design-stories`; content changes do not require a new build or deploy.
 
 The admin key is kept only in the browser tab's session storage. Story images use public URLs, because Render's service filesystem is ephemeral.
+
+The same editor includes an Apps tab. App cards can be added, reordered, published, or hidden without redeploying the portfolio.
 
 ## Contact route
 

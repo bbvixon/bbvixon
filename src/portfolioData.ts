@@ -24,6 +24,19 @@ export type DesignStory = {
   status?: "ready" | "placeholder";
 };
 
+export type PortfolioApp = {
+  slug: string;
+  title: string;
+  tagline: string;
+  description: string;
+  url: string;
+  iconUrl: string;
+  category: string;
+  platform: string;
+  published?: boolean;
+  sortOrder?: number;
+};
+
 export type CreatorVideo = {
   title: string;
   displayTitle?: string;
@@ -100,6 +113,35 @@ export const designStories: DesignStory[] = [
       `/design/ab-pharma-redesigned-pages/page-${index + 1}.png`,
     ),
     status: "ready",
+  },
+];
+
+export const portfolioApps: PortfolioApp[] = [
+  {
+    slug: "may-be",
+    title: "may.be",
+    tagline: "Find clarity in the choices ahead.",
+    description:
+      "A calm, voice-first decision companion that helps you express where you feel stuck and explore the paths available to you.",
+    url: "https://may-be-62sg.onrender.com/",
+    iconUrl: "/apps/maybe-icon.png",
+    category: "Decision companion",
+    platform: "Web app",
+    published: true,
+    sortOrder: 0,
+  },
+  {
+    slug: "emoti-games",
+    title: "Emoti-Games",
+    tagline: "A playful way to explore how you feel.",
+    description:
+      "An interactive Figma Make experience that welcomes you by name and turns emotional reflection into a light, game-like moment.",
+    url: "https://lunch-click-86851431.figma.site/",
+    iconUrl: "/apps/emoti-games-icon.png",
+    category: "Interactive game",
+    platform: "Figma Make",
+    published: true,
+    sortOrder: 1,
   },
 ];
 
