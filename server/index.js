@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import cors from "cors";
 import express from "express";
+import { timingSafeEqual } from "node:crypto";
 import { existsSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -41,6 +42,70 @@ const getAiReply = (data) =>
   data?.response ||
   "";
 
+const readCmsKey = (request) => {
+  const authorization = String(request.headers.authorization ?? "");
+  return authorization.startsWith("Bearer ") ? authorization.slice(7).trim() : "";
+};
+
+const requireCmsAdmin = (request, response, next) => {
+  const configuredKey = String(process.env.CMS_ADMIN_KEY ?? "");
+  const suppliedKey = readCmsKey(request);
+
+  if (!configuredKey) {
+    response.status(503).json({ ok: false, message: "CMS_ADMIN_KEY is not configured." });
+    return;
+  }
+
+  const configuredBuffer = Buffer.from(configuredKey);
+  const suppliedBuffer = Buffer.from(suppliedKey);
+  const authorized =
+    configuredBuffer.length === suppliedBuffer.length &&
+    timingSafeEqual(configuredBuffer, suppliedBuffer);
+
+  if (!authorized) {
+    response.status(401).json({ ok: false, message: "Invalid CMS admin key." });
+    return;
+  }
+
+  next();
+};
+
+const mapStoryRow = (row) => ({
+  slug: row.slug,
+  title: row.title,
+  role: row.role,
+  summary: row.summary,
+  outcome: row.outcome,
+  tags: row.tags ?? [],
+  thumbnailUrl: row.thumbnail_url ?? undefined,
+  documentUrl: row.document_url ?? undefined,
+  redesignDocumentUrl: row.redesign_document_url ?? undefined,
+  figmaUrl: row.figma_url ?? undefined,
+  pageImages: row.page_images ?? [],
+  sections: row.sections ?? [],
+  status: row.status,
+  published: row.published,
+  sortOrder: row.sort_order,
+  updatedAt: row.updated_at,
+});
+
+const optionalText = (value) => {
+  const text = String(value ?? "").trim();
+  return text || null;
+};
+
+const normalizeStorySections = (value) => {
+  if (!Array.isArray(value)) return [];
+
+  return value.slice(0, 40).map((section) => ({
+    eyebrow: String(section?.eyebrow ?? "").trim().slice(0, 120),
+    title: String(section?.title ?? "Untitled section").trim().slice(0, 200) || "Untitled section",
+    body: String(section?.body ?? "").trim().slice(0, 20000),
+    imageUrl: String(section?.imageUrl ?? "").trim().slice(0, 2000),
+    imageAlt: String(section?.imageAlt ?? "").trim().slice(0, 300),
+  }));
+};
+
 app.use(cors({ origin: allowedOrigin }));
 app.use(express.json({ limit: "1mb" }));
 
@@ -62,6 +127,113 @@ app.get("/api/health", async (_request, response) => {
         configured: true,
         message: error instanceof Error ? error.message : "Database check failed.",
       },
+    });
+  }
+});
+
+app.get("/api/design-stories", async (_request, response) => {
+  response.set("Cache-Control", "no-store");
+
+  if (!process.env.DATABASE_URL) {
+    response.json({ ok: true, stories: [] });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      "select * from design_stories order by sort_order asc, updated_at desc",
+    );
+    response.json({
+      ok: true,
+      stories: result.rows.filter((row) => row.published).map(mapStoryRow),
+      hiddenSlugs: result.rows.filter((row) => !row.published).map((row) => row.slug),
+    });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not load design stories.",
+    });
+  }
+});
+
+app.get("/api/admin/design-stories", requireCmsAdmin, async (_request, response) => {
+  response.set("Cache-Control", "no-store");
+
+  try {
+    const result = await pool.query(
+      "select * from design_stories order by sort_order asc, updated_at desc",
+    );
+    response.json({ ok: true, stories: result.rows.map(mapStoryRow) });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not load CMS stories.",
+    });
+  }
+});
+
+app.put("/api/admin/design-stories/:slug", requireCmsAdmin, async (request, response) => {
+  const slug = String(request.params.slug ?? "").trim().toLowerCase();
+  const body = request.body ?? {};
+
+  if (!/^[a-z0-9]+(?:[.-][a-z0-9]+)*$/.test(slug)) {
+    response.status(400).json({ ok: false, message: "Use a lowercase URL slug." });
+    return;
+  }
+
+  const title = String(body.title ?? "").trim();
+  const role = String(body.role ?? "").trim();
+  const summary = String(body.summary ?? "").trim();
+  const outcome = String(body.outcome ?? "").trim();
+  const tags = Array.isArray(body.tags) ? body.tags.map(String).map((item) => item.trim()).filter(Boolean).slice(0, 12) : [];
+  const pageImages = Array.isArray(body.pageImages) ? body.pageImages.map(String).map((item) => item.trim()).filter(Boolean).slice(0, 60) : [];
+  const sections = normalizeStorySections(body.sections);
+  const status = body.status === "placeholder" ? "placeholder" : "ready";
+  const published = body.published !== false;
+  const sortOrder = Number.isFinite(Number(body.sortOrder)) ? Math.trunc(Number(body.sortOrder)) : 0;
+
+  if (!title || !summary) {
+    response.status(400).json({ ok: false, message: "Title and summary are required." });
+    return;
+  }
+
+  try {
+    const result = await pool.query(
+      `insert into design_stories (
+         slug, title, role, summary, outcome, tags, thumbnail_url, document_url,
+         redesign_document_url, figma_url, page_images, sections, status, published,
+         sort_order, updated_at
+       ) values ($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9, $10, $11::jsonb,
+         $12::jsonb, $13, $14, $15, now())
+       on conflict (slug) do update set
+         title = excluded.title,
+         role = excluded.role,
+         summary = excluded.summary,
+         outcome = excluded.outcome,
+         tags = excluded.tags,
+         thumbnail_url = excluded.thumbnail_url,
+         document_url = excluded.document_url,
+         redesign_document_url = excluded.redesign_document_url,
+         figma_url = excluded.figma_url,
+         page_images = excluded.page_images,
+         sections = excluded.sections,
+         status = excluded.status,
+         published = excluded.published,
+         sort_order = excluded.sort_order,
+         updated_at = now()
+       returning *`,
+      [
+        slug, title, role, summary, outcome, JSON.stringify(tags),
+        optionalText(body.thumbnailUrl), optionalText(body.documentUrl),
+        optionalText(body.redesignDocumentUrl), optionalText(body.figmaUrl),
+        JSON.stringify(pageImages), JSON.stringify(sections), status, published, sortOrder,
+      ],
+    );
+    response.json({ ok: true, story: mapStoryRow(result.rows[0]) });
+  } catch (error) {
+    response.status(500).json({
+      ok: false,
+      message: error instanceof Error ? error.message : "Could not save design story.",
     });
   }
 });

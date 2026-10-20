@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "dev:api": "nodemon server/index.js",
-    "start:api": "node server/index.js",
+    "start:api": "node server/db/apply-schema.js && node server/index.js",
     "db:schema": "node server/db/apply-schema.js"
   },
   "dependencies": {
