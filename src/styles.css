@@ -4566,3 +4566,225 @@ h3 {
 [data-theme="light"] .appStoreCopy h3 {
   color: #6548a6;
 }
+
+/* Warm-up screen for free-tier hosted apps */
+.appLaunchPage {
+  align-items: center;
+  background:
+    radial-gradient(circle at 18% 16%, rgba(216, 164, 92, 0.13), transparent 30%),
+    radial-gradient(circle at 82% 78%, rgba(255, 255, 255, 0.045), transparent 34%),
+    #030303;
+  color: #fffaf3;
+  display: flex;
+  justify-content: center;
+  min-height: 100svh;
+  overflow: hidden;
+  padding: 80px 24px;
+  position: relative;
+}
+
+.launchAmbient {
+  border-radius: 50%;
+  filter: blur(12px);
+  pointer-events: none;
+  position: absolute;
+}
+
+.launchAmbientOne {
+  background: rgba(216, 164, 92, 0.1);
+  height: 420px;
+  left: -180px;
+  top: -120px;
+  width: 420px;
+}
+
+.launchAmbientTwo {
+  background: rgba(255, 255, 255, 0.045);
+  bottom: -180px;
+  height: 480px;
+  right: -180px;
+  width: 480px;
+}
+
+.launchBrand,
+.launchBack {
+  background: transparent;
+  border: 0;
+  color: rgba(255, 250, 243, 0.72);
+  cursor: pointer;
+  font-weight: 680;
+  position: absolute;
+  z-index: 2;
+}
+
+.launchBrand {
+  left: clamp(22px, 5vw, 72px);
+  top: 28px;
+}
+
+.launchBack {
+  bottom: 30px;
+  font-size: 0.86rem;
+}
+
+.launchBrand:hover,
+.launchBack:hover {
+  color: #d8a45c;
+}
+
+.launchCard {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  max-width: 520px;
+  position: relative;
+  text-align: center;
+  width: 100%;
+  z-index: 1;
+}
+
+.launchIconWrap {
+  display: grid;
+  margin-bottom: 28px;
+  place-items: center;
+  position: relative;
+}
+
+.launchIconWrap img {
+  border-radius: 27%;
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.52), 0 0 0 1px rgba(216, 164, 92, 0.28);
+  height: clamp(116px, 16vw, 164px);
+  position: relative;
+  width: clamp(116px, 16vw, 164px);
+  z-index: 2;
+}
+
+.launchOrbit {
+  border: 1px solid rgba(216, 164, 92, 0.32);
+  border-radius: 50%;
+  position: absolute;
+}
+
+.launchOrbitOne {
+  animation: launchPulse 2.4s ease-in-out infinite;
+  height: 210px;
+  width: 210px;
+}
+
+.launchOrbitTwo {
+  animation: launchPulse 2.4s 0.8s ease-in-out infinite;
+  height: 270px;
+  width: 270px;
+}
+
+.launchCard h1 {
+  font-size: clamp(3.3rem, 9vw, 6.5rem);
+  letter-spacing: -0.075em;
+  line-height: 0.9;
+  margin: 0 0 20px;
+}
+
+.launchStatus {
+  color: rgba(255, 250, 243, 0.7);
+  font-size: 1.05rem;
+  margin: 0 0 32px;
+}
+
+.launchProgressTrack {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(216, 164, 92, 0.18);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+  width: min(100%, 430px);
+}
+
+.launchProgressTrack > span {
+  background: linear-gradient(90deg, #a7652d, #d8a45c 62%, #fff3df);
+  border-radius: inherit;
+  box-shadow: 0 0 22px rgba(216, 164, 92, 0.48);
+  display: block;
+  height: 100%;
+  transition: width 650ms ease;
+}
+
+.launchProgressMeta {
+  color: rgba(255, 250, 243, 0.48);
+  display: flex;
+  font-size: 0.74rem;
+  justify-content: flex-start;
+  margin-top: 11px;
+  width: min(100%, 430px);
+}
+
+.launchFallbackActions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.launchFallbackActions button,
+.launchFallbackActions a {
+  align-items: center;
+  background: #f7f3ff;
+  border: 0;
+  border-radius: 999px;
+  color: #17111f;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0 18px;
+}
+
+.launchFallbackActions a {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fffaf3;
+}
+
+@keyframes launchPulse {
+  0%, 100% {
+    opacity: 0.25;
+    transform: scale(0.88);
+  }
+
+  50% {
+    opacity: 0.72;
+    transform: scale(1.05);
+  }
+}
+
+@media (max-width: 560px) {
+  .appLaunchPage {
+    padding-inline: 20px;
+  }
+
+  .launchProgressMeta {
+    align-items: center;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .launchFallbackActions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .launchFallbackActions button,
+  .launchFallbackActions a {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .launchOrbit {
+    animation: none;
+  }
+
+  .launchProgressTrack > span {
+    transition: none;
+  }
+}
