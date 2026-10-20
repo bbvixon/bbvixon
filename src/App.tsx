@@ -641,6 +641,93 @@ function FullscreenPlayer({
   );
 }
 
+function AppLaunchScreen({ app, onBack }: { app: PortfolioApp; onBack: () => void }) {
+  const [progress, setProgress] = useState(8);
+  const [status, setStatus] = useState("Connecting to may.be...");
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    let completed = false;
+    let timedOut = false;
+
+    const progressTimer = window.setInterval(() => {
+      setProgress((current) => {
+        const next = Math.min(current + (current < 42 ? 7 : current < 72 ? 4 : 1), 92);
+        if (next >= 78) setStatus("Almost ready...");
+        else if (next >= 48) setStatus("Preparing your decision space...");
+        else if (next >= 20) setStatus("Waking up the experience...");
+        return next;
+      });
+    }, 700);
+
+    const timeoutTimer = window.setTimeout(() => {
+      timedOut = true;
+      controller.abort();
+      setHasError(true);
+      setStatus("may.be is taking longer than expected.");
+    }, 60000);
+
+    fetch(app.url, {
+      cache: "no-store",
+      mode: "no-cors",
+      signal: controller.signal,
+    })
+      .then(() => {
+        completed = true;
+        window.clearInterval(progressTimer);
+        window.clearTimeout(timeoutTimer);
+        setProgress(100);
+        setStatus("may.be is ready.");
+        window.setTimeout(() => window.location.replace(app.url), 650);
+      })
+      .catch(() => {
+        if (timedOut || completed) return;
+        window.clearInterval(progressTimer);
+        window.clearTimeout(timeoutTimer);
+        setHasError(true);
+        setStatus("We could not wake may.be automatically.");
+      });
+
+    return () => {
+      completed = true;
+      controller.abort();
+      window.clearInterval(progressTimer);
+      window.clearTimeout(timeoutTimer);
+    };
+  }, [app.url]);
+
+  return (
+    <main className="appLaunchPage">
+      <div className="launchAmbient launchAmbientOne" aria-hidden="true" />
+      <div className="launchAmbient launchAmbientTwo" aria-hidden="true" />
+      <button className="launchBrand" onClick={onBack} type="button">Basil Bose</button>
+      <section className="launchCard" aria-live="polite">
+        <div className="launchIconWrap">
+          <span className="launchOrbit launchOrbitOne" aria-hidden="true" />
+          <span className="launchOrbit launchOrbitTwo" aria-hidden="true" />
+          <img src={app.iconUrl} alt="may.be app icon" />
+        </div>
+        <h1>may.be</h1>
+        <p className="launchStatus">{status}</p>
+        <div className="launchProgressTrack" role="progressbar" aria-label="Loading may.be" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
+          <span style={{ width: `${progress}%` }} />
+        </div>
+        <div className="launchProgressMeta">
+          <span>{progress}%</span>
+        </div>
+        {hasError ? (
+          <div className="launchFallbackActions">
+            <button onClick={() => window.location.reload()} type="button">Try again</button>
+            <a href={app.url}>Open directly</a>
+          </div>
+        ) : null}
+      </section>
+      <button className="launchBack" onClick={onBack} type="button">Back to Apps</button>
+    </main>
+  );
+}
+
 function App() {
   const [theme, setTheme] = useState<"dark" | "light">(() =>
     window.localStorage.getItem("bbvixon-theme") === "light" ? "light" : "dark",
@@ -667,9 +754,11 @@ function App() {
     const section = window.location.hash.slice(1);
     return ["about", "design", "creator", "contact"].includes(section) ? section as NavigationSection : null;
   });
-  const [view, setView] = useState<"home" | "creator" | "design" | "apps" | "cms">(
+  const [view, setView] = useState<"home" | "creator" | "design" | "apps" | "launcher" | "cms">(
     window.location.hash === "#cms"
       ? "cms"
+      : window.location.hash.startsWith("#launch-app-")
+        ? "launcher"
       : window.location.hash === "#apps"
         ? "apps"
       : window.location.hash === "#creator-page" || window.location.hash.startsWith("#movie-") || window.location.hash === "#watch"
@@ -705,6 +794,8 @@ function App() {
       ...cmsPortfolioApps.filter((app) => !portfolioApps.some((fallback) => fallback.slug === app.slug)),
     ].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   }, [cmsPortfolioApps, hiddenCmsAppSlugs]);
+  const launchAppSlug = window.location.hash.replace("#launch-app-", "");
+  const launchingApp = resolvedPortfolioApps.find((app) => app.slug === launchAppSlug) ?? portfolioApps.find((app) => app.slug === "may-be");
   const [activeDesignIndex, setActiveDesignIndex] = useState(() => {
     const hashStory = window.location.hash.replace("#design-story-", "");
     const hashIndex = designStories.findIndex(
@@ -1070,6 +1161,10 @@ function App() {
     return <CmsAdmin defaultStories={designStories} defaultApps={portfolioApps} />;
   }
 
+  if (view === "launcher" && launchingApp) {
+    return <AppLaunchScreen app={launchingApp} onBack={openAppsPage} />;
+  }
+
   if (view === "apps") {
     return (
       <main className="appsPage">
@@ -1110,7 +1205,7 @@ function App() {
                   <h2>{app.title}</h2>
                   <h3>{app.tagline}</h3>
                   <p>{app.description}</p>
-                  <a href={app.url} target="_blank" rel="noreferrer">
+                  <a href={app.slug === "may-be" ? `/#launch-app-${app.slug}` : app.url} target="_blank" rel="noreferrer">
                     Open app <span aria-hidden="true">↗</span>
                   </a>
                 </div>
