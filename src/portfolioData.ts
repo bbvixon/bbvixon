@@ -1,4 +1,13 @@
+export type DesignStorySection = {
+  eyebrow?: string;
+  title: string;
+  body: string;
+  imageUrl?: string;
+  imageAlt?: string;
+};
+
 export type DesignStory = {
+  slug: string;
   title: string;
   role: string;
   summary: string;
@@ -9,6 +18,9 @@ export type DesignStory = {
   redesignDocumentUrl?: string;
   pageImages?: string[];
   figmaUrl?: string;
+  sections?: DesignStorySection[];
+  published?: boolean;
+  sortOrder?: number;
   status?: "ready" | "placeholder";
 };
 
@@ -28,6 +40,7 @@ export type CreatorVideo = {
 
 export const designStories: DesignStory[] = [
   {
+    slug: "may.be",
     title: "may.be",
     role: "AI Product Design Story",
     summary:
@@ -42,6 +55,7 @@ export const designStories: DesignStory[] = [
     status: "ready",
   },
   {
+    slug: "spaid",
     title: "Spaid",
     role: "UX Case Study",
     summary:
@@ -57,6 +71,7 @@ export const designStories: DesignStory[] = [
     status: "ready",
   },
   {
+    slug: "playmore",
     title: "Playmore",
     role: "UX Story",
     summary:
@@ -70,6 +85,7 @@ export const designStories: DesignStory[] = [
     status: "ready",
   },
   {
+    slug: "ab-pharma",
     title: "AB Pharma",
     role: "Enterprise UX Story",
     summary:

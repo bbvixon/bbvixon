@@ -5,6 +5,9 @@ import { portfolioKnowledge } from "./portfolioKnowledge";
 import type { CreatorVideo } from "./portfolioData";
 import { fetchCreatorVideos } from "./youtube";
 import basilAboutStanding from "./assets/basil-about-standing.png";
+import { CmsAdmin } from "./CmsAdmin";
+import { StorySections } from "./StorySections";
+import type { DesignStory } from "./portfolioData";
 
 type YouTubePlayer = {
   playVideo: () => void;
@@ -654,8 +657,10 @@ function App() {
   });
   const [contactStatus, setContactStatus] = useState("");
   const [isSendingContact, setIsSendingContact] = useState(false);
-  const [view, setView] = useState<"home" | "creator" | "design">(
-    window.location.hash === "#creator-page" || window.location.hash.startsWith("#movie-") || window.location.hash === "#watch"
+  const [view, setView] = useState<"home" | "creator" | "design" | "cms">(
+    window.location.hash === "#cms"
+      ? "cms"
+      : window.location.hash === "#creator-page" || window.location.hash.startsWith("#movie-") || window.location.hash === "#watch"
       ? "creator"
       : window.location.hash.startsWith("#design-story-")
         ? "design"
@@ -670,10 +675,19 @@ function App() {
   );
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [featuredIndex, setFeaturedIndex] = useState(0);
+  const [cmsDesignStories, setCmsDesignStories] = useState<DesignStory[]>([]);
+  const [hiddenCmsStorySlugs, setHiddenCmsStorySlugs] = useState<string[]>([]);
+  const resolvedDesignStories = useMemo(() => {
+    const overrides = new Map(cmsDesignStories.map((story) => [story.slug, story]));
+    return [
+      ...designStories.filter((story) => !hiddenCmsStorySlugs.includes(story.slug)).map((story) => overrides.get(story.slug) ?? story),
+      ...cmsDesignStories.filter((story) => !designStories.some((fallback) => fallback.slug === story.slug)),
+    ].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  }, [cmsDesignStories, hiddenCmsStorySlugs]);
   const [activeDesignIndex, setActiveDesignIndex] = useState(() => {
     const hashStory = window.location.hash.replace("#design-story-", "");
     const hashIndex = designStories.findIndex(
-      (story) => story.title.toLowerCase().replace(/\s+/g, "-") === hashStory,
+      (story) => story.slug === hashStory,
     );
     return hashIndex >= 0 ? hashIndex : 0;
   });
@@ -681,7 +695,7 @@ function App() {
     () => videos.find((video) => video.videoId === activeVideoId) ?? videos[0],
     [activeVideoId, videos],
   );
-  const activeDesignStory = designStories[activeDesignIndex] ?? designStories[0];
+  const activeDesignStory = resolvedDesignStories[activeDesignIndex] ?? resolvedDesignStories[0] ?? designStories[0];
   const isMayBeStory = activeDesignStory.title === "may.be";
   const isAbPharmaStory = activeDesignStory.title === "AB Pharma";
   const activeTitle = activeVideo?.displayTitle ?? activeVideo?.title;
@@ -790,6 +804,38 @@ function App() {
       {theme === "dark" ? "Dark" : "Light"}
     </button>
   );
+
+  useEffect(() => {
+    if (window.location.hash === "#cms") return;
+
+    const controller = new AbortController();
+    fetch("/api/design-stories", { signal: controller.signal })
+      .then(async (response) => {
+        if (!response.ok) throw new Error("CMS unavailable");
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data.stories)) return;
+        setCmsDesignStories(data.stories);
+        setHiddenCmsStorySlugs(Array.isArray(data.hiddenSlugs) ? data.hiddenSlugs : []);
+        const hashStory = window.location.hash.replace("#design-story-", "");
+        if (hashStory) {
+          const mergedSlugs = [
+            ...designStories
+              .filter((story) => !(Array.isArray(data.hiddenSlugs) && data.hiddenSlugs.includes(story.slug)))
+              .map((story) => data.stories.find((candidate: DesignStory) => candidate.slug === story.slug) ?? story),
+            ...data.stories.filter((story: DesignStory) => !designStories.some((fallback) => fallback.slug === story.slug)),
+          ].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+          const nextIndex = mergedSlugs.findIndex((story) => story.slug === hashStory);
+          if (nextIndex >= 0) setActiveDesignIndex(nextIndex);
+        }
+      })
+      .catch((error) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      });
+
+    return () => controller.abort();
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -909,16 +955,16 @@ function App() {
   };
 
   const openDesignStory = (index: number) => {
-    const story = designStories[index];
+    const story = resolvedDesignStories[index];
 
-    if (!story?.documentUrl) {
+    if (!story?.documentUrl && !story?.sections?.length) {
       setActiveDesignIndex(index);
       return;
     }
 
     setActiveDesignIndex(index);
     setView("design");
-    window.location.hash = `design-story-${story.title.toLowerCase().replace(/\s+/g, "-")}`;
+    window.location.hash = `design-story-${story.slug}`;
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -935,6 +981,10 @@ function App() {
     window.location.hash = "watch";
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  if (view === "cms") {
+    return <CmsAdmin defaultStories={designStories} />;
+  }
 
   if (view === "design") {
     return (
@@ -993,7 +1043,9 @@ function App() {
             </a>
           ) : null}
         </section>
-        {isMayBeStory ? (
+        {activeDesignStory.sections?.length ? (
+          <StorySections sections={activeDesignStory.sections} />
+        ) : isMayBeStory ? (
           <section className="mayBeStory" aria-label="may.be product design case study">
             <article className="mayBeOpening">
               <div>
@@ -1114,7 +1166,7 @@ function App() {
             </section>
           </section>
         ) : null}
-        {isAbPharmaStory ? (
+        {isAbPharmaStory && !activeDesignStory.sections?.length ? (
           <section className="abStoryDeck" aria-label="AB Pharma refreshed UX story">
             <div className="abStoryGrid">
               <article className="abNarrativeCard">
@@ -1225,7 +1277,7 @@ function App() {
             </div>
           </section>
         ) : null}
-        {!isMayBeStory ? <section className="caseStudyViewer">
+        {!isMayBeStory && (activeDesignStory.pageImages?.length || !activeDesignStory.sections?.length) ? <section className="caseStudyViewer">
           {activeDesignStory.pageImages?.length ? (
             <div className="caseStudyPages" aria-label={`${activeDesignStory.title} full case study`}>
               {activeDesignStory.pageImages.map((pageImage, index) => (
@@ -1569,7 +1621,7 @@ function App() {
           <article className={activeDesignStory.status === "placeholder" ? "designFeature placeholder" : "designFeature"}>
             <button
               className="designPreview"
-              disabled={!activeDesignStory.documentUrl}
+              disabled={!activeDesignStory.documentUrl && !activeDesignStory.sections?.length}
               onClick={() => openDesignStory(activeDesignIndex)}
               type="button"
             >
@@ -1593,7 +1645,7 @@ function App() {
                 ))}
               </div>
               <div className="designActions">
-                {activeDesignStory.documentUrl ? (
+                {activeDesignStory.documentUrl || activeDesignStory.sections?.length ? (
                   <button className="primaryAction designGoAction" onClick={() => openDesignStory(activeDesignIndex)} type="button">
                     Lets Go..
                   </button>
@@ -1605,10 +1657,10 @@ function App() {
           </article>
 
           <div className="designThumbRail" aria-label="Design story thumbnails">
-            {designStories.map((story, index) => (
+            {resolvedDesignStories.map((story, index) => (
               <button
                 className={index === activeDesignIndex ? "designThumb active" : "designThumb"}
-                key={story.title}
+                key={story.slug}
                 onClick={() => setActiveDesignIndex(index)}
                 onDoubleClick={() => openDesignStory(index)}
                 type="button"

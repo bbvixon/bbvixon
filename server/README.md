@@ -43,10 +43,31 @@ After `DATABASE_URL` is set, run:
 npm run db:schema
 ```
 
+Production startup applies this idempotent schema automatically before starting the API.
+
 This creates:
 
 - `contact_messages`
 - `assistant_logs`
+- `design_stories`
+
+## Design stories CMS
+
+Set a long random admin key locally and in Render:
+
+```env
+CMS_ADMIN_KEY=replace_with_a_long_random_secret
+```
+
+After deployment, open the private editor at:
+
+```text
+https://your-domain.example/#cms
+```
+
+Enter the admin key to load the editor. Saving a story writes it to PostgreSQL and updates the public portfolio through `/api/design-stories`; content changes do not require a new build or deploy.
+
+The admin key is kept only in the browser tab's session storage. Story images use public URLs, because Render's service filesystem is ephemeral.
 
 ## Contact route
 
