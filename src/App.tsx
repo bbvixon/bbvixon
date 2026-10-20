@@ -24,6 +24,8 @@ type YouTubePlayer = {
   destroy: () => void;
 };
 
+type NavigationSection = "about" | "design" | "creator" | "apps" | "contact";
+
 declare global {
   interface Window {
     YT?: {
@@ -661,6 +663,10 @@ function App() {
   });
   const [contactStatus, setContactStatus] = useState("");
   const [isSendingContact, setIsSendingContact] = useState(false);
+  const [activeHomeSection, setActiveHomeSection] = useState<NavigationSection | null>(() => {
+    const section = window.location.hash.slice(1);
+    return ["about", "design", "creator", "contact"].includes(section) ? section as NavigationSection : null;
+  });
   const [view, setView] = useState<"home" | "creator" | "design" | "apps" | "cms">(
     window.location.hash === "#cms"
       ? "cms"
@@ -867,6 +873,30 @@ function App() {
   }, [theme]);
 
   useEffect(() => {
+    if (view !== "home") return;
+
+    const updateActiveSection = () => {
+      const marker = window.scrollY + window.innerHeight * 0.34;
+      let current: NavigationSection | null = null;
+
+      (["about", "design", "creator", "contact"] as NavigationSection[]).forEach((section) => {
+        const element = document.getElementById(section);
+        if (element && element.offsetTop <= marker) current = section;
+      });
+
+      setActiveHomeSection(current);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("resize", updateActiveSection);
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
+    };
+  }, [view]);
+
+  useEffect(() => {
     return () => {
       if (bulbSlowTimerRef.current) {
         window.clearTimeout(bulbSlowTimerRef.current);
@@ -966,6 +996,7 @@ function App() {
 
   const openCreatorPage = () => {
     setView("creator");
+    setActiveHomeSection("creator");
     setCreatorView("library");
     setIsDescriptionExpanded(false);
     window.location.hash = "creator-page";
@@ -974,15 +1005,38 @@ function App() {
 
   const openHome = () => {
     setView("home");
+    setActiveHomeSection(null);
     window.location.hash = "home";
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const openAppsPage = () => {
     setView("apps");
+    setActiveHomeSection("apps");
     window.location.hash = "apps";
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const openHomeSection = (section: Exclude<NavigationSection, "apps" | "creator">) => {
+    setView("home");
+    setActiveHomeSection(section);
+    window.location.hash = section;
+    window.setTimeout(() => document.getElementById(section)?.scrollIntoView({ behavior: "smooth" }), 0);
+  };
+
+  const renderNavigation = (activeSection: NavigationSection | null) => (
+    <nav className="topbar" aria-label="Primary navigation">
+      <button className="brandButton" onClick={openHome} type="button">Basil Bose</button>
+      <div className="navlinks">
+        {themeToggle}
+        <button className={activeSection === "about" ? "activeNavItem" : undefined} aria-current={activeSection === "about" ? "page" : undefined} onClick={() => openHomeSection("about")} type="button">About</button>
+        <button className={activeSection === "design" ? "activeNavItem" : undefined} aria-current={activeSection === "design" ? "page" : undefined} onClick={() => openHomeSection("design")} type="button">Design</button>
+        <button className={activeSection === "creator" ? "activeNavItem" : undefined} aria-current={activeSection === "creator" ? "page" : undefined} onClick={openCreatorPage} type="button">Creator</button>
+        <button className={activeSection === "apps" ? "activeNavItem" : undefined} aria-current={activeSection === "apps" ? "page" : undefined} onClick={openAppsPage} type="button">Apps</button>
+        <button className={activeSection === "contact" ? "activeNavItem" : undefined} aria-current={activeSection === "contact" ? "page" : undefined} onClick={() => openHomeSection("contact")} type="button">Contact</button>
+      </div>
+    </nav>
+  );
 
   const openDesignStory = (index: number) => {
     const story = resolvedDesignStories[index];
@@ -1019,18 +1073,7 @@ function App() {
   if (view === "apps") {
     return (
       <main className="appsPage">
-        <nav className="cinemaNav appsNav" aria-label="Apps navigation">
-          <div className="navIdentity">
-            <button className="brandButton" onClick={openHome} type="button">Basil Bose</button>
-          </div>
-          <div className="navlinks">
-            {themeToggle}
-            <button onClick={() => { openHome(); window.location.hash = "about"; window.setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 0); }} type="button">About</button>
-            <button onClick={() => { openHome(); window.location.hash = "design"; window.setTimeout(() => document.getElementById("design")?.scrollIntoView({ behavior: "smooth" }), 0); }} type="button">Design</button>
-            <button onClick={openCreatorPage} type="button">Creator</button>
-            <button className="activeNavItem" aria-current="page" type="button">Apps</button>
-          </div>
-        </nav>
+        {renderNavigation("apps")}
 
         <section className="appsHero">
           <div className="appsHeroOrb appsHeroOrbOne" aria-hidden="true" />
@@ -1087,28 +1130,7 @@ function App() {
   if (view === "design") {
     return (
       <main className="caseStudyPage">
-        <nav className="cinemaNav" aria-label="Case study navigation">
-          <div className="navIdentity">
-            <button className="brandButton" onClick={openHome} type="button">
-              Basil Bose
-            </button>
-          </div>
-          <div className="navlinks">
-            {themeToggle}
-            <button onClick={openHome} type="button">Portfolio</button>
-            <button onClick={openAppsPage} type="button">Apps</button>
-            <button
-              onClick={() => {
-                setView("home");
-                window.location.hash = "design";
-                window.setTimeout(() => document.getElementById("design")?.scrollIntoView({ behavior: "smooth" }), 0);
-              }}
-              type="button"
-            >
-              Design
-            </button>
-          </div>
-        </nav>
+        {renderNavigation("design")}
         <section className="caseStudyHeader">
           <p className="kicker">Design Case Study</p>
           <h1>{activeDesignStory.title}</h1>
@@ -1428,19 +1450,7 @@ function App() {
 
       return (
         <main className="cinemaPage">
-          <nav className="cinemaNav" aria-label="Movie navigation">
-            <div className="navIdentity">
-              <button className="brandButton" onClick={openCreatorPage} type="button">
-                BB VIXON
-              </button>
-            </div>
-            <div className="navlinks">
-              {themeToggle}
-              <button onClick={openCreatorPage} type="button">Creator Home</button>
-              <button onClick={openHome} type="button">Portfolio</button>
-              <button onClick={openAppsPage} type="button">Apps</button>
-            </div>
-          </nav>
+          {renderNavigation("creator")}
 
           <section className="movieDetailHero">
             <img className="movieDetailBackdrop" src={activeThumbnail} alt="" aria-hidden="true" />
@@ -1492,20 +1502,7 @@ function App() {
 
     return (
       <main className="cinemaPage">
-        <nav className="cinemaNav" aria-label="Creator navigation">
-          <div className="navIdentity">
-            <button className="brandButton" onClick={openHome} type="button">
-              Basil Bose
-            </button>
-          </div>
-          <div className="navlinks">
-            {themeToggle}
-            <button onClick={openHome} type="button">Portfolio</button>
-            <button onClick={openAppsPage} type="button">Apps</button>
-            <a href="#featured">Featured</a>
-            <a href="#library">Library</a>
-          </div>
-        </nav>
+        {renderNavigation("creator")}
 
         <section className="cinemaHero directionsHero" id="featured">
           <div className="cinemaShade" aria-hidden="true" />
@@ -1601,19 +1598,7 @@ function App() {
 
   return (
     <main>
-      <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href="#home">
-          Basil Bose
-        </a>
-        <div className="navlinks">
-          {themeToggle}
-          <a href="#about">About</a>
-          <a href="#design">Design</a>
-          <button onClick={openCreatorPage} type="button">Creator</button>
-          <button onClick={openAppsPage} type="button">Apps</button>
-          <a href="#contact">Contact</a>
-        </div>
-      </nav>
+      {renderNavigation(activeHomeSection)}
 
       <section className="hero" id="home" onMouseMove={handleHeroMouseMove}>
         <div className="heroBackdrop" aria-hidden="true" />
