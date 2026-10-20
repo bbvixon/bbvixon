@@ -1,13 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ChangeEvent, FormEvent } from "react";
-import { creatorVideos, designStories, links, youtubeConfig } from "./portfolioData";
+import { creatorVideos, designStories, links, portfolioApps, youtubeConfig } from "./portfolioData";
 import { portfolioKnowledge } from "./portfolioKnowledge";
-import type { CreatorVideo } from "./portfolioData";
+import type { CreatorVideo, DesignStory, PortfolioApp } from "./portfolioData";
 import { fetchCreatorVideos } from "./youtube";
 import basilAboutStanding from "./assets/basil-about-standing.png";
 import { CmsAdmin } from "./CmsAdmin";
 import { StorySections } from "./StorySections";
-import type { DesignStory } from "./portfolioData";
 
 type YouTubePlayer = {
   playVideo: () => void;
@@ -191,7 +190,7 @@ Portfolio sections:
 - Hero: Basil Bose, Designer / Developer / Creator.
 - Design: user stories, UX, product thinking, interface decisions, human-centered problem solving.
 - Creator Cinema: BB VIXON streaming-style page for Basil's direction works.
-- Future section: local AI assistant/agent space.
+- Apps: may.be decision companion and Emoti-Games interactive Figma Make experience.
 
 Creator videos:
 ${movieContext || "- Creator videos are still loading."}`;
@@ -206,6 +205,7 @@ const outOfScopeReplies = [
 
 const portfolioScopeKeywords = [
   "ai",
+  "app",
   "assistant",
   "basil",
   "bb vixon",
@@ -242,6 +242,10 @@ const getLocalAssistantReply = (question: string, videos: CreatorVideo[]) => {
     .slice(0, 5)
     .map((video) => video.displayTitle ?? video.title)
     .join(", ");
+
+  if (normalizedQuestion.includes("app") || normalizedQuestion.includes("may.be") || normalizedQuestion.includes("emoti")) {
+    return `The Apps page is a growing shelf of Basil's interactive work. It currently includes may.be, a voice-first decision companion, and Emoti-Games, a playful Figma Make experience about emotions.`;
+  }
 
   if (
     normalizedQuestion.includes("creator") ||
@@ -657,9 +661,11 @@ function App() {
   });
   const [contactStatus, setContactStatus] = useState("");
   const [isSendingContact, setIsSendingContact] = useState(false);
-  const [view, setView] = useState<"home" | "creator" | "design" | "cms">(
+  const [view, setView] = useState<"home" | "creator" | "design" | "apps" | "cms">(
     window.location.hash === "#cms"
       ? "cms"
+      : window.location.hash === "#apps"
+        ? "apps"
       : window.location.hash === "#creator-page" || window.location.hash.startsWith("#movie-") || window.location.hash === "#watch"
       ? "creator"
       : window.location.hash.startsWith("#design-story-")
@@ -677,6 +683,8 @@ function App() {
   const [featuredIndex, setFeaturedIndex] = useState(0);
   const [cmsDesignStories, setCmsDesignStories] = useState<DesignStory[]>([]);
   const [hiddenCmsStorySlugs, setHiddenCmsStorySlugs] = useState<string[]>([]);
+  const [cmsPortfolioApps, setCmsPortfolioApps] = useState<PortfolioApp[]>([]);
+  const [hiddenCmsAppSlugs, setHiddenCmsAppSlugs] = useState<string[]>([]);
   const resolvedDesignStories = useMemo(() => {
     const overrides = new Map(cmsDesignStories.map((story) => [story.slug, story]));
     return [
@@ -684,6 +692,13 @@ function App() {
       ...cmsDesignStories.filter((story) => !designStories.some((fallback) => fallback.slug === story.slug)),
     ].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   }, [cmsDesignStories, hiddenCmsStorySlugs]);
+  const resolvedPortfolioApps = useMemo(() => {
+    const overrides = new Map(cmsPortfolioApps.map((app) => [app.slug, app]));
+    return [
+      ...portfolioApps.filter((app) => !hiddenCmsAppSlugs.includes(app.slug)).map((app) => overrides.get(app.slug) ?? app),
+      ...cmsPortfolioApps.filter((app) => !portfolioApps.some((fallback) => fallback.slug === app.slug)),
+    ].sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  }, [cmsPortfolioApps, hiddenCmsAppSlugs]);
   const [activeDesignIndex, setActiveDesignIndex] = useState(() => {
     const hashStory = window.location.hash.replace("#design-story-", "");
     const hashIndex = designStories.findIndex(
@@ -809,15 +824,24 @@ function App() {
     if (window.location.hash === "#cms") return;
 
     const controller = new AbortController();
-    fetch("/api/design-stories", { signal: controller.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("CMS unavailable");
+    Promise.all([
+      fetch("/api/design-stories", { signal: controller.signal }).then(async (response) => {
+        if (!response.ok) throw new Error("Stories CMS unavailable");
         return response.json();
-      })
-      .then((data) => {
+      }),
+      fetch("/api/apps", { signal: controller.signal }).then(async (response) => {
+        if (!response.ok) throw new Error("Apps CMS unavailable");
+        return response.json();
+      }),
+    ])
+      .then(([data, appsData]) => {
         if (!Array.isArray(data.stories)) return;
         setCmsDesignStories(data.stories);
         setHiddenCmsStorySlugs(Array.isArray(data.hiddenSlugs) ? data.hiddenSlugs : []);
+        if (Array.isArray(appsData.apps)) {
+          setCmsPortfolioApps(appsData.apps);
+          setHiddenCmsAppSlugs(Array.isArray(appsData.hiddenSlugs) ? appsData.hiddenSlugs : []);
+        }
         const hashStory = window.location.hash.replace("#design-story-", "");
         if (hashStory) {
           const mergedSlugs = [
@@ -954,6 +978,12 @@ function App() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const openAppsPage = () => {
+    setView("apps");
+    window.location.hash = "apps";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const openDesignStory = (index: number) => {
     const story = resolvedDesignStories[index];
 
@@ -983,7 +1013,75 @@ function App() {
   };
 
   if (view === "cms") {
-    return <CmsAdmin defaultStories={designStories} />;
+    return <CmsAdmin defaultStories={designStories} defaultApps={portfolioApps} />;
+  }
+
+  if (view === "apps") {
+    return (
+      <main className="appsPage">
+        <nav className="cinemaNav appsNav" aria-label="Apps navigation">
+          <div className="navIdentity">
+            <button className="brandButton" onClick={openHome} type="button">Basil Bose</button>
+          </div>
+          <div className="navlinks">
+            {themeToggle}
+            <button onClick={() => { openHome(); window.location.hash = "about"; window.setTimeout(() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" }), 0); }} type="button">About</button>
+            <button onClick={() => { openHome(); window.location.hash = "design"; window.setTimeout(() => document.getElementById("design")?.scrollIntoView({ behavior: "smooth" }), 0); }} type="button">Design</button>
+            <button onClick={openCreatorPage} type="button">Creator</button>
+            <button className="activeNavItem" aria-current="page" type="button">Apps</button>
+          </div>
+        </nav>
+
+        <section className="appsHero">
+          <div className="appsHeroOrb appsHeroOrbOne" aria-hidden="true" />
+          <div className="appsHeroOrb appsHeroOrbTwo" aria-hidden="true" />
+          <p className="kicker">Apps by Basil</p>
+          <h1>Small ideas,<br />made interactive.</h1>
+          <p className="appsHeroIntro">
+            A growing shelf of independent experiments, thoughtful tools, and playful browser experiences.
+          </p>
+        </section>
+
+        <section className="appsStore" aria-label="Basil Bose apps">
+          <div className="appsStoreHeading">
+            <div>
+              <p className="kicker">Available now</p>
+              <h2>Explore the collection</h2>
+            </div>
+            <p>Each app opens in its own tab, ready to use.</p>
+          </div>
+
+          <div className="appCardGrid">
+            {resolvedPortfolioApps.map((app, index) => (
+              <article className="appStoreCard" key={app.slug}>
+                <div className="appStoreVisual">
+                  <span className="appRank">{String(index + 1).padStart(2, "0")}</span>
+                  {app.iconUrl ? <img src={app.iconUrl} alt={`${app.title} app icon`} /> : <span className="appIconFallback">{app.title.slice(0, 1)}</span>}
+                </div>
+                <div className="appStoreCopy">
+                  <div className="appMetaRow">
+                    <span>{app.category}</span>
+                    <i aria-hidden="true">•</i>
+                    <span>{app.platform}</span>
+                  </div>
+                  <h2>{app.title}</h2>
+                  <h3>{app.tagline}</h3>
+                  <p>{app.description}</p>
+                  <a href={app.url} target="_blank" rel="noreferrer">
+                    Open app <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <footer className="appsFooter">
+          <span>More experiments are on the way.</span>
+          <button onClick={openHome} type="button">Return to portfolio</button>
+        </footer>
+      </main>
+    );
   }
 
   if (view === "design") {
@@ -994,21 +1092,11 @@ function App() {
             <button className="brandButton" onClick={openHome} type="button">
               Basil Bose
             </button>
-            <button
-              className="innerBackButton"
-              onClick={() => {
-                setView("home");
-                window.location.hash = "design";
-                window.setTimeout(() => document.getElementById("design")?.scrollIntoView({ behavior: "smooth" }), 0);
-              }}
-              type="button"
-            >
-              &lt; Back to Design
-            </button>
           </div>
           <div className="navlinks">
             {themeToggle}
             <button onClick={openHome} type="button">Portfolio</button>
+            <button onClick={openAppsPage} type="button">Apps</button>
             <button
               onClick={() => {
                 setView("home");
@@ -1345,14 +1433,12 @@ function App() {
               <button className="brandButton" onClick={openCreatorPage} type="button">
                 BB VIXON
               </button>
-              <button className="innerBackButton" onClick={openCreatorPage} type="button">
-                &lt; Back to Library
-              </button>
             </div>
             <div className="navlinks">
               {themeToggle}
               <button onClick={openCreatorPage} type="button">Creator Home</button>
               <button onClick={openHome} type="button">Portfolio</button>
+              <button onClick={openAppsPage} type="button">Apps</button>
             </div>
           </nav>
 
@@ -1411,13 +1497,11 @@ function App() {
             <button className="brandButton" onClick={openHome} type="button">
               Basil Bose
             </button>
-            <button className="innerBackButton" onClick={openHome} type="button">
-              &lt; Back to Portfolio
-            </button>
           </div>
           <div className="navlinks">
             {themeToggle}
             <button onClick={openHome} type="button">Portfolio</button>
+            <button onClick={openAppsPage} type="button">Apps</button>
             <a href="#featured">Featured</a>
             <a href="#library">Library</a>
           </div>
@@ -1526,6 +1610,7 @@ function App() {
           <a href="#about">About</a>
           <a href="#design">Design</a>
           <button onClick={openCreatorPage} type="button">Creator</button>
+          <button onClick={openAppsPage} type="button">Apps</button>
           <a href="#contact">Contact</a>
         </div>
       </nav>

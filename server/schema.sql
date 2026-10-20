@@ -38,3 +38,20 @@ create table if not exists design_stories (
 
 create index if not exists design_stories_publish_order_idx
   on design_stories (published, sort_order, updated_at desc);
+
+create table if not exists portfolio_apps (
+  slug text primary key,
+  title text not null,
+  tagline text not null default '',
+  description text not null default '',
+  url text not null,
+  icon_url text not null default '',
+  category text not null default '',
+  platform text not null default '',
+  published boolean not null default true,
+  sort_order integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists portfolio_apps_publish_order_idx
+  on portfolio_apps (published, sort_order, updated_at desc);

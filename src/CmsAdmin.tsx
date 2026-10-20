@@ -1,8 +1,10 @@
 import { useMemo, useState } from "react";
-import type { DesignStory, DesignStorySection } from "./portfolioData";
+import type { DesignStory, DesignStorySection, PortfolioApp } from "./portfolioData";
+import { CmsAppsEditor } from "./CmsAppsEditor";
 
 type CmsAdminProps = {
   defaultStories: DesignStory[];
+  defaultApps: PortfolioApp[];
 };
 
 const blankStory = (): DesignStory => ({
@@ -29,7 +31,7 @@ const normalizeStory = (story: DesignStory): DesignStory => ({
   sortOrder: story.sortOrder ?? 0,
 });
 
-export function CmsAdmin({ defaultStories }: CmsAdminProps) {
+export function CmsAdmin({ defaultStories, defaultApps }: CmsAdminProps) {
   const [adminKey, setAdminKey] = useState(() => sessionStorage.getItem("bbvixon-cms-key") ?? "");
   const [stories, setStories] = useState<DesignStory[]>(defaultStories.map(normalizeStory));
   const [selectedSlug, setSelectedSlug] = useState(defaultStories[0]?.slug ?? "");
@@ -130,8 +132,8 @@ export function CmsAdmin({ defaultStories }: CmsAdminProps) {
       <header className="cmsHeader">
         <div>
           <p className="kicker">Private editor</p>
-          <h1>Design stories CMS</h1>
-          <p>Update portfolio content in PostgreSQL and publish it immediately—no rebuild required.</p>
+          <h1>Portfolio CMS</h1>
+          <p>Update design stories and apps in PostgreSQL and publish them immediately—no rebuild required.</p>
         </div>
         <a href="/#design">View portfolio</a>
       </header>
@@ -146,6 +148,7 @@ export function CmsAdmin({ defaultStories }: CmsAdminProps) {
           <p>{message}</p>
         </section>
       ) : (
+        <>
         <div className="cmsWorkspace">
           <aside className="cmsStoryList">
             <button type="button" className="cmsNewStory" onClick={addStory}>+ New story</button>
@@ -193,6 +196,8 @@ export function CmsAdmin({ defaultStories }: CmsAdminProps) {
             </div>
           </section>
         </div>
+        <CmsAppsEditor adminKey={adminKey} defaultApps={defaultApps} />
+        </>
       )}
     </main>
   );

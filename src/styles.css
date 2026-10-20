@@ -86,10 +86,9 @@ select {
 }
 
 .navIdentity {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  gap: 0;
 }
 
 .innerBackButton {
@@ -752,11 +751,14 @@ h3 {
 
 .cinemaNav {
   align-items: center;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.92), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(18px);
+  background: rgba(3, 3, 3, 0.72);
+  border-bottom: 1px solid rgba(245, 231, 211, 0.11);
   display: flex;
   justify-content: space-between;
   left: 0;
-  padding: 22px clamp(20px, 5vw, 72px);
+  min-height: 70px;
+  padding: 18px clamp(20px, 5vw, 72px);
   position: fixed;
   right: 0;
   top: 0;
@@ -4223,4 +4225,344 @@ h3 {
 
 [data-theme="light"] .cinemaPage .movieFacts p:not(.streamLabel) {
   color: rgba(18, 16, 13, 0.72);
+}
+
+/* Apps storefront */
+.appsPage {
+  background: radial-gradient(circle at 84% 12%, rgba(112, 80, 255, 0.22), transparent 30%), radial-gradient(circle at 12% 30%, rgba(0, 210, 255, 0.12), transparent 28%), #050507;
+  color: #f8f5ff;
+  min-height: 100vh;
+}
+
+.appsNav {
+  backdrop-filter: blur(24px);
+  background: rgba(5, 5, 7, 0.72);
+}
+
+.activeNavItem {
+  color: #bfa9ff !important;
+}
+
+.appsHero {
+  min-height: 72vh;
+  overflow: hidden;
+  padding: clamp(180px, 22vh, 240px) clamp(24px, 8vw, 124px) 100px;
+  position: relative;
+}
+
+.appsHero > *:not(.appsHeroOrb) {
+  position: relative;
+  z-index: 1;
+}
+
+.appsHero h1 {
+  font-size: clamp(4.2rem, 10vw, 9rem);
+  letter-spacing: -0.075em;
+  line-height: 0.86;
+  margin: 20px 0 34px;
+  max-width: 1050px;
+}
+
+.appsHeroIntro {
+  color: rgba(242, 237, 255, 0.7);
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 660px;
+}
+
+.appsHeroOrb {
+  border-radius: 50%;
+  pointer-events: none;
+  position: absolute;
+}
+
+.appsHeroOrbOne {
+  background: radial-gradient(circle at 35% 30%, #8af0ff, #7148ff 42%, rgba(16, 5, 54, 0.1) 72%);
+  box-shadow: 0 0 100px rgba(102, 70, 255, 0.35);
+  height: clamp(240px, 34vw, 520px);
+  opacity: 0.7;
+  right: -7%;
+  top: 18%;
+  width: clamp(240px, 34vw, 520px);
+}
+
+.appsHeroOrbTwo {
+  background: radial-gradient(circle, rgba(255, 73, 175, 0.76), rgba(92, 37, 209, 0.18) 65%, transparent 72%);
+  bottom: -34%;
+  height: 340px;
+  left: 42%;
+  opacity: 0.5;
+  width: 340px;
+}
+
+.appMetaRow span {
+  color: rgba(247, 242, 255, 0.62);
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+}
+
+.appsStore {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 92px clamp(24px, 8vw, 124px) 130px;
+}
+
+.appsStoreHeading {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 44px;
+}
+
+.appsStoreHeading h2 {
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  letter-spacing: -0.055em;
+  margin: 10px 0 0;
+}
+
+.appsStoreHeading > p {
+  color: rgba(242, 237, 255, 0.58);
+  margin: 0 0 8px;
+}
+
+.appCardGrid {
+  display: grid;
+  gap: clamp(20px, 3vw, 34px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.appStoreCard {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035));
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 34px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(148px, 0.8fr) minmax(0, 1.45fr);
+  min-height: 410px;
+  overflow: hidden;
+  padding: 24px;
+  transition: border-color 180ms ease, transform 180ms ease;
+}
+
+.appStoreCard:hover {
+  border-color: rgba(191, 169, 255, 0.45);
+  transform: translateY(-6px);
+}
+
+.appStoreVisual {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 24px;
+  display: flex;
+  justify-content: center;
+  min-height: 250px;
+  overflow: hidden;
+  padding: clamp(20px, 3vw, 38px);
+  position: relative;
+}
+
+.appStoreVisual img,
+.appIconFallback {
+  aspect-ratio: 1;
+  border-radius: 25%;
+  box-shadow: 0 24px 45px rgba(0, 0, 0, 0.42);
+  display: grid;
+  max-width: 230px;
+  object-fit: cover;
+  place-items: center;
+  width: 100%;
+}
+
+.appIconFallback {
+  background: linear-gradient(145deg, #7148ff, #14c9e8);
+  color: white;
+  font-size: 4rem;
+  font-weight: 750;
+}
+
+.appRank {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.72rem;
+  font-weight: 700;
+  left: 16px;
+  letter-spacing: 0.12em;
+  position: absolute;
+  top: 14px;
+}
+
+.appStoreCopy {
+  align-self: center;
+  padding: 20px 12px 20px 0;
+}
+
+.appMetaRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.appMetaRow i {
+  color: rgba(213, 199, 255, 0.5);
+  font-style: normal;
+}
+
+.appStoreCopy h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  letter-spacing: -0.06em;
+  line-height: 1;
+  margin: 24px 0 10px;
+}
+
+.appStoreCopy h3 {
+  color: #d5c7ff;
+  font-size: 1.05rem;
+  line-height: 1.45;
+  margin: 0 0 18px;
+}
+
+.appStoreCopy > p {
+  color: rgba(242, 237, 255, 0.63);
+  line-height: 1.65;
+  margin: 0 0 28px;
+}
+
+.appStoreCopy > a,
+.appsFooter button,
+.cmsCollectionHeading a {
+  align-items: center;
+  background: #f7f3ff;
+  border: 0;
+  border-radius: 999px;
+  color: #17111f;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 720;
+  gap: 12px;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+}
+
+.appsFooter {
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(242, 237, 255, 0.58);
+  display: flex;
+  justify-content: space-between;
+  padding: 34px clamp(24px, 8vw, 124px) 48px;
+}
+
+.cmsAppsSection {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin-top: 54px;
+  padding-top: 54px;
+}
+
+.cmsCollectionHeading {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.cmsCollectionHeading h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  letter-spacing: -0.05em;
+  margin: 6px 0 10px;
+}
+
+.cmsCollectionHeading p:not(.kicker) {
+  color: rgba(247, 240, 230, 0.6);
+  margin: 0;
+}
+
+.cmsAppsWorkspace {
+  margin-top: 0;
+}
+
+@media (max-width: 1050px) {
+  .appCardGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .appStoreCard {
+    grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.3fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .appsHero {
+    min-height: auto;
+    padding-bottom: 76px;
+    padding-top: 150px;
+  }
+
+  .appsHero h1 {
+    font-size: clamp(3.5rem, 18vw, 5.5rem);
+  }
+
+  .appsStore {
+    padding-bottom: 80px;
+    padding-top: 64px;
+  }
+
+  .appsStoreHeading,
+  .appsFooter,
+  .cmsCollectionHeading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .appStoreCard {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  .appStoreCopy {
+    padding: 0 4px 10px;
+  }
+}
+
+[data-theme="light"] .appsPage {
+  background: radial-gradient(circle at 84% 12%, rgba(112, 80, 255, 0.16), transparent 30%), radial-gradient(circle at 12% 30%, rgba(0, 174, 204, 0.1), transparent 28%), #f4f1f8;
+  color: #1c1721;
+}
+
+[data-theme="light"] .appsNav {
+  background: rgba(244, 241, 248, 0.82);
+}
+
+[data-theme="light"] .appsHeroIntro,
+[data-theme="light"] .appsStoreHeading > p,
+[data-theme="light"] .appStoreCopy > p,
+[data-theme="light"] .appsFooter {
+  color: rgba(28, 23, 33, 0.66);
+}
+
+[data-theme="light"] .appMetaRow span {
+  color: rgba(28, 23, 33, 0.75);
+}
+
+[data-theme="light"] .appsStore,
+[data-theme="light"] .appsFooter {
+  border-color: rgba(51, 35, 72, 0.12);
+}
+
+[data-theme="light"] .appStoreCard {
+  background: rgba(255, 255, 255, 0.72);
+  border-color: rgba(51, 35, 72, 0.12);
+  box-shadow: 0 30px 80px rgba(52, 37, 69, 0.1);
+}
+
+[data-theme="light"] .appStoreVisual {
+  background: rgba(78, 51, 114, 0.05);
+}
+
+[data-theme="light"] .appStoreCopy h3 {
+  color: #6548a6;
 }
