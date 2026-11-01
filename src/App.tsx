@@ -25,6 +25,29 @@ type YouTubePlayer = {
 };
 
 type NavigationSection = "about" | "design" | "creator" | "apps" | "contact";
+type Theme = "dark" | "light";
+type ThemeMode = Theme | "auto";
+
+const getAutomaticTheme = (date = new Date()): Theme => {
+  const hour = date.getHours();
+  return hour >= 6 && hour < 18 ? "light" : "dark";
+};
+
+const getMillisecondsUntilThemeBoundary = (date = new Date()) => {
+  const nextBoundary = new Date(date);
+  nextBoundary.setMinutes(0, 0, 0);
+
+  if (date.getHours() < 6) {
+    nextBoundary.setHours(6);
+  } else if (date.getHours() < 18) {
+    nextBoundary.setHours(18);
+  } else {
+    nextBoundary.setDate(nextBoundary.getDate() + 1);
+    nextBoundary.setHours(6);
+  }
+
+  return Math.max(1, nextBoundary.getTime() - date.getTime());
+};
 
 declare global {
   interface Window {
@@ -729,9 +752,12 @@ function AppLaunchScreen({ app, onBack }: { app: PortfolioApp; onBack: () => voi
 }
 
 function App() {
-  const [theme, setTheme] = useState<"dark" | "light">(() =>
-    window.localStorage.getItem("bbvixon-theme") === "light" ? "light" : "dark",
-  );
+  const [themeMode, setThemeMode] = useState<ThemeMode>(() => {
+    const savedTheme = window.localStorage.getItem("bbvixon-theme");
+    return savedTheme === "light" || savedTheme === "dark" || savedTheme === "auto" ? savedTheme : "auto";
+  });
+  const [automaticTheme, setAutomaticTheme] = useState<Theme>(() => getAutomaticTheme());
+  const theme: Theme = themeMode === "auto" ? automaticTheme : themeMode;
   const [bulbMotion, setBulbMotion] = useState<"idle" | "active" | "settling">("idle");
   const bulbSlowTimerRef = useRef<number | null>(null);
   const bulbStopTimerRef = useRef<number | null>(null);
@@ -828,7 +854,14 @@ function App() {
   const featuredVideo = featuredVideos[featuredIndex] ?? featuredVideos[0];
   const featuredImage =
     featuredVideo?.thumbnailUrl ?? `https://img.youtube.com/vi/${featuredVideo?.videoId}/maxresdefault.jpg`;
-  const toggleTheme = () => setTheme((currentTheme) => (currentTheme === "dark" ? "light" : "dark"));
+  const toggleTheme = () => setThemeMode(theme === "dark" ? "light" : "dark");
+  const cycleThemeMode = () => {
+    setThemeMode((currentMode) => {
+      if (currentMode === "auto") return "light";
+      if (currentMode === "light") return "dark";
+      return "auto";
+    });
+  };
   const resetIdleGameTimer = () => {
     if (idleGameTimerRef.current) {
       window.clearTimeout(idleGameTimerRef.current);
@@ -904,16 +937,16 @@ function App() {
   };
   const themeToggle = (
     <button
-      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-      aria-pressed={theme === "light"}
+      aria-label={`Theme: ${themeMode === "auto" ? `automatic, currently ${theme}` : themeMode}. Select next theme mode.`}
       className="themeToggle"
-      onClick={toggleTheme}
+      data-mode={themeMode}
+      onClick={cycleThemeMode}
       type="button"
     >
       <span className="themeToggleTrack" aria-hidden="true">
         <span className="themeToggleThumb" />
       </span>
-      {theme === "dark" ? "Dark" : "Light"}
+      {themeMode === "auto" ? `Auto · ${theme === "dark" ? "Dark" : "Light"}` : themeMode === "dark" ? "Dark" : "Light"}
     </button>
   );
 
@@ -960,8 +993,33 @@ function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    window.localStorage.setItem("bbvixon-theme", theme);
-  }, [theme]);
+    window.localStorage.setItem("bbvixon-theme", themeMode);
+  }, [theme, themeMode]);
+
+  useEffect(() => {
+    if (themeMode !== "auto") return;
+
+    let boundaryTimer = 0;
+    const syncAutomaticTheme = () => {
+      setAutomaticTheme(getAutomaticTheme());
+      window.clearTimeout(boundaryTimer);
+      boundaryTimer = window.setTimeout(syncAutomaticTheme, getMillisecondsUntilThemeBoundary());
+    };
+
+    const syncWhenVisible = () => {
+      if (!document.hidden) syncAutomaticTheme();
+    };
+
+    syncAutomaticTheme();
+    document.addEventListener("visibilitychange", syncWhenVisible);
+    window.addEventListener("focus", syncAutomaticTheme);
+
+    return () => {
+      window.clearTimeout(boundaryTimer);
+      document.removeEventListener("visibilitychange", syncWhenVisible);
+      window.removeEventListener("focus", syncAutomaticTheme);
+    };
+  }, [themeMode]);
 
   useEffect(() => {
     if (view !== "home") return;
