@@ -153,9 +153,18 @@ select {
   width: 16px;
 }
 
-.themeToggle[aria-pressed="true"] .themeToggleThumb {
+.themeToggle[data-mode="auto"] .themeToggleThumb {
+  background: #d8a45c;
+  transform: translateX(10px);
+}
+
+.themeToggle[data-mode="light"] .themeToggleThumb {
   background: #15120f;
   transform: translateX(20px);
+}
+
+.themeToggle[data-mode="dark"] .themeToggleThumb {
+  transform: translateX(0);
 }
 
 .hero {
