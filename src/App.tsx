@@ -7,6 +7,7 @@ import { fetchCreatorVideos } from "./youtube";
 import basilAboutStanding from "./assets/basil-about-standing.png";
 import { CmsAdmin } from "./CmsAdmin";
 import { StorySections } from "./StorySections";
+import { SuzukiConnectStory } from "./SuzukiConnectStory";
 
 type YouTubePlayer = {
   playVideo: () => void;
@@ -829,12 +830,19 @@ function App() {
     );
     return hashIndex >= 0 ? hashIndex : 0;
   });
+  const [designThumbStart, setDesignThumbStart] = useState(0);
+  const designThumbPageSize = 3;
+  const maxDesignThumbStart = Math.max(0, resolvedDesignStories.length - designThumbPageSize);
+  const visibleDesignStories = resolvedDesignStories
+    .slice(designThumbStart, designThumbStart + designThumbPageSize)
+    .map((story, visibleIndex) => ({ story, index: designThumbStart + visibleIndex }));
   const activeVideo = useMemo(
     () => videos.find((video) => video.videoId === activeVideoId) ?? videos[0],
     [activeVideoId, videos],
   );
   const activeDesignStory = resolvedDesignStories[activeDesignIndex] ?? resolvedDesignStories[0] ?? designStories[0];
   const isMayBeStory = activeDesignStory.title === "may.be";
+  const isSuzukiStory = activeDesignStory.slug === "suzuki-connect-one";
   const isAbPharmaStory = activeDesignStory.title === "AB Pharma";
   const activeTitle = activeVideo?.displayTitle ?? activeVideo?.title;
   const activeThumbnail =
@@ -1020,6 +1028,10 @@ function App() {
       window.removeEventListener("focus", syncAutomaticTheme);
     };
   }, [themeMode]);
+
+  useEffect(() => {
+    setDesignThumbStart((currentStart) => Math.min(currentStart, maxDesignThumbStart));
+  }, [maxDesignThumbStart]);
 
   useEffect(() => {
     if (view !== "home") return;
@@ -1306,7 +1318,9 @@ function App() {
             </a>
           ) : null}
         </section>
-        {activeDesignStory.sections?.length ? (
+        {isSuzukiStory ? (
+          <SuzukiConnectStory sections={activeDesignStory.sections} />
+        ) : activeDesignStory.sections?.length ? (
           <StorySections sections={activeDesignStory.sections} />
         ) : isMayBeStory ? (
           <section className="mayBeStory" aria-label="may.be product design case study">
@@ -1841,9 +1855,13 @@ function App() {
         </div>
 
         <div className="designCarousel" aria-label="Design user story carousel">
-          <article className={activeDesignStory.status === "placeholder" ? "designFeature placeholder" : "designFeature"}>
+          <article
+            className={activeDesignStory.status === "placeholder" ? "designFeature placeholder" : "designFeature"}
+            data-story={activeDesignStory.slug}
+          >
             <button
               className="designPreview"
+              data-story={activeDesignStory.slug}
               disabled={!activeDesignStory.documentUrl && !activeDesignStory.sections?.length}
               onClick={() => openDesignStory(activeDesignIndex)}
               type="button"
@@ -1879,22 +1897,48 @@ function App() {
             </div>
           </article>
 
-          <div className="designThumbRail" aria-label="Design story thumbnails">
-            {resolvedDesignStories.map((story, index) => (
-              <button
-                className={index === activeDesignIndex ? "designThumb active" : "designThumb"}
-                key={story.slug}
-                onClick={() => setActiveDesignIndex(index)}
-                onDoubleClick={() => openDesignStory(index)}
-                type="button"
-              >
-                {story.thumbnailUrl ? <img src={story.thumbnailUrl} alt="" /> : <span className="thumbPlaceholder">+</span>}
-                <span>
-                  <small>{story.role}</small>
-                  <strong>{story.title}</strong>
-                </span>
-              </button>
-            ))}
+          <div className="designThumbCarousel" aria-label="Browse design stories">
+            <button
+              aria-label="Show previous design stories"
+              className="designThumbNavButton previous"
+              disabled={designThumbStart === 0}
+              onClick={() => setDesignThumbStart(0)}
+              type="button"
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+            <div className="designThumbRail" aria-label="Design story thumbnails">
+              {visibleDesignStories.map(({ story, index }) => (
+                <button
+                  className={index === activeDesignIndex ? "designThumb active" : "designThumb"}
+                  data-story={story.slug}
+                  key={story.slug}
+                  onClick={() => setActiveDesignIndex(index)}
+                  onDoubleClick={() => openDesignStory(index)}
+                  type="button"
+                >
+                  <span className="designThumbImageFrame" aria-hidden="true">
+                    {story.thumbnailUrl ? <img src={story.thumbnailUrl} alt="" /> : <span className="thumbPlaceholder">+</span>}
+                  </span>
+                  <span className="designThumbCopy">
+                    <small>{story.role}</small>
+                    <strong>{story.title}</strong>
+                  </span>
+                </button>
+              ))}
+            </div>
+            <button
+              aria-label="Show next design stories"
+              className="designThumbNavButton next"
+              disabled={designThumbStart === maxDesignThumbStart}
+              onClick={() => setDesignThumbStart(maxDesignThumbStart)}
+              type="button"
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+            <span className="designThumbPosition" aria-live="polite">
+              Showing {designThumbStart + 1}–{Math.min(designThumbStart + designThumbPageSize, resolvedDesignStories.length)} of {resolvedDesignStories.length}
+            </span>
           </div>
         </div>
       </section>
