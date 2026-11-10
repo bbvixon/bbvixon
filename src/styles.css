@@ -1584,8 +1584,13 @@ h3 {
   filter: saturate(0.95) contrast(1.04);
   height: 100%;
   object-fit: cover;
-  object-position: top center;
+  object-position: center;
   width: 100%;
+}
+
+.designPreview[data-story="suzuki-connect-one"] img {
+  object-fit: contain;
+  transform: scale(1.08);
 }
 
 .designPreview:disabled {
@@ -1618,19 +1623,48 @@ h3 {
 
 .designFeatureContent {
   align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
   padding: clamp(8px, 2vw, 22px);
 }
 
 .designFeatureContent h3 {
-  font-size: clamp(2.4rem, 6vw, 5.4rem);
+  font-size: clamp(2.4rem, 6vw, 4.8rem);
   letter-spacing: -0.07em;
   line-height: 0.9;
+  margin: 8px 0 18px;
 }
 
 .designFeatureContent p {
   color: rgba(244, 238, 229, 0.72);
   font-size: 1.04rem;
   line-height: 1.65;
+  margin: 0 0 14px;
+}
+
+.designFeatureContent .storyRole {
+  margin-bottom: 0;
+}
+
+.designFeatureContent .outcome {
+  margin-bottom: 14px;
+}
+
+.designFeature[data-story="suzuki-connect-one"] .designFeatureContent h3 {
+  font-size: clamp(2.5rem, 4.5vw, 3.8rem);
+  margin: 6px 0 12px;
+}
+
+.designFeature[data-story="suzuki-connect-one"] .designFeatureContent p {
+  font-size: 0.98rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.designFeature[data-story="suzuki-connect-one"] .designActions {
+  margin-top: 12px;
 }
 
 .designActions {
@@ -1638,7 +1672,7 @@ h3 {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
-  margin-top: 26px;
+  margin-top: 18px;
 }
 
 .designGoAction {
@@ -1677,6 +1711,51 @@ h3 {
   padding: 0 18px;
 }
 
+.designThumbCarousel {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 46px minmax(0, 1fr) 46px;
+}
+
+.designThumbNavButton {
+  align-items: center;
+  background: #d8a45c;
+  border: 1px solid rgba(255, 236, 207, 0.7);
+  border-radius: 999px;
+  box-shadow: 0 12px 30px rgba(216, 164, 92, 0.24);
+  color: #15120f;
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 1.25rem;
+  font-weight: 900;
+  height: 46px;
+  justify-content: center;
+  padding: 0;
+  width: 46px;
+}
+
+.designThumbNavButton:hover:not(:disabled),
+.designThumbNavButton:focus-visible {
+  background: #efb764;
+  transform: translateY(-1px);
+}
+
+.designThumbNavButton:disabled {
+  cursor: default;
+  opacity: 0.24;
+}
+
+.designThumbPosition {
+  color: rgba(244, 238, 229, 0.56);
+  font-size: 0.75rem;
+  font-weight: 750;
+  grid-column: 2;
+  letter-spacing: 0.07em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 .designThumbRail {
   display: grid;
   gap: 14px;
@@ -1695,7 +1774,7 @@ h3 {
   display: grid;
   gap: 14px;
   grid-template-columns: 92px minmax(0, 1fr);
-  min-height: 116px;
+  height: 116px;
   overflow: hidden;
   padding: 10px;
   text-align: left;
@@ -1706,14 +1785,26 @@ h3 {
   box-shadow: 0 0 0 1px rgba(216, 164, 92, 0.2), 0 18px 42px rgba(0, 0, 0, 0.28);
 }
 
-.designThumb img,
-.thumbPlaceholder {
-  background: rgba(255, 255, 255, 0.08);
+.designThumbImageFrame {
+  background: #eee9e0;
   border-radius: 10px;
+  display: block;
   height: 92px;
-  object-fit: cover;
-  object-position: top center;
+  overflow: hidden;
   width: 92px;
+}
+
+.designThumbImageFrame > img,
+.thumbPlaceholder {
+  display: block;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  width: 100%;
+}
+
+.designThumb[data-story="suzuki-connect-one"] .designThumbImageFrame > img {
+  transform: scale(1.28);
 }
 
 .thumbPlaceholder {
@@ -1725,7 +1816,7 @@ h3 {
   justify-content: center;
 }
 
-.designThumb span {
+.designThumbCopy {
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1738,11 +1829,19 @@ h3 {
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .designThumb strong {
+  display: -webkit-box;
   font-size: 1.1rem;
   line-height: 1.08;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .caseStudyPage {
@@ -2384,6 +2483,223 @@ h3 {
 
 [data-theme="light"] .cmsStorySectionCopy > p:not(.streamLabel) {
   color: rgba(51, 33, 25, 0.72);
+}
+
+/* Suzuki Connect ONE visual case study */
+.suzukiStory {
+  margin: 0 auto;
+  max-width: 1440px;
+  overflow: hidden;
+  padding: 0 clamp(20px, 5vw, 72px) clamp(80px, 10vw, 150px);
+}
+
+.suzukiStory h2 { font-size: clamp(2.7rem, 6.5vw, 6.6rem); letter-spacing: -0.065em; line-height: 0.9; }
+.suzukiStory h3 { letter-spacing: -0.035em; }
+.suzukiStory p { line-height: 1.62; }
+
+.suzukiHeroVisual {
+  align-items: center;
+  background: radial-gradient(circle at 78% 48%, rgba(40, 106, 255, 0.28), transparent 31%), linear-gradient(130deg, #05070d 0%, #07111f 55%, #071634 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 34px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(420px, 1.15fr);
+  min-height: 650px;
+  overflow: hidden;
+  padding: clamp(34px, 6vw, 82px);
+  position: relative;
+}
+
+.suzukiHeroCopy { position: relative; z-index: 2; }
+.suzukiHeroCopy h2 { color: #fff; margin: 20px 0 28px; }
+.suzukiHeroCopy > p:not(.streamLabel) { color: rgba(255,255,255,.72); max-width: 570px; }
+.suzukiHeroNote { border-left: 2px solid #f59b35; display: grid; gap: 5px; margin-top: 38px; padding-left: 16px; }
+.suzukiHeroNote span { color: rgba(255,255,255,.48); font-size: .72rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+.suzukiHeroNote strong { color: #fff; font-size: 1.05rem; }
+.suzukiDeviceStage { align-items: center; display: flex; justify-content: center; min-height: 480px; position: relative; }
+.suzukiDeviceStage img { filter: drop-shadow(0 42px 42px rgba(0,0,0,.55)); max-height: 590px; max-width: 115%; object-fit: contain; position: relative; transform: scale(1.08); width: 100%; z-index: 1; }
+.suzukiStageGlow { background: #2670ff; border-radius: 50%; filter: blur(80px); height: 55%; opacity: .24; position: absolute; width: 55%; }
+
+.suzukiMoments { background: #f5f1e9; color: #0a0b0d; display: grid; grid-template-columns: repeat(3, 1fr); margin: 24px 0 clamp(80px, 10vw, 150px); }
+.suzukiMoments article { border-right: 1px solid rgba(0,0,0,.14); min-height: 250px; padding: clamp(25px, 4vw, 48px); }
+.suzukiMoments article:last-child { border: 0; }
+.suzukiMoments span { color: #e56f1f; font-size: .75rem; font-weight: 950; letter-spacing: .12em; }
+.suzukiMoments p { color: rgba(0,0,0,.48); font-size: .78rem; font-weight: 850; margin: 45px 0 4px; text-transform: uppercase; }
+.suzukiMoments h3 { font-size: clamp(1.55rem, 3vw, 2.5rem); margin: 0 0 14px; }
+.suzukiMoments small { color: rgba(0,0,0,.62); line-height: 1.5; }
+
+.suzukiEditorial { display: grid; gap: clamp(40px, 7vw, 100px); grid-template-columns: minmax(0, .9fr) minmax(360px, 1.1fr); margin-bottom: clamp(90px, 12vw, 170px); }
+.suzukiEditorial h2 { margin-top: 16px; }
+.suzukiEditorialBody > p { color: rgba(244,238,229,.7); font-size: 1.12rem; margin-bottom: 28px; }
+.suzukiCapabilityGrid { display: grid; gap: 1px; grid-template-columns: repeat(2, 1fr); }
+.suzukiCapabilityGrid span { background: rgba(255,255,255,.065); display: flex; gap: 13px; padding: 18px; }
+.suzukiCapabilityGrid b { color: #f59b35; font-size: .75rem; }
+.suzukiEditorialBody > small { color: rgba(244,238,229,.43); display: block; margin-top: 16px; }
+
+.suzukiEvidence, .suzukiArchitecture, .suzukiPrototype, .suzukiValidation { margin-bottom: clamp(100px, 13vw, 180px); }
+.suzukiSectionHeading { margin-bottom: clamp(38px, 6vw, 72px); max-width: 980px; }
+.suzukiSectionHeading h2 { margin: 14px 0 22px; }
+.suzukiSectionHeading > p:not(.streamLabel) { color: rgba(244,238,229,.65); max-width: 720px; }
+.suzukiSectionHeading.compact { max-width: 700px; }
+.suzukiSignalGrid { display: grid; gap: 12px; grid-template-columns: repeat(4, 1fr); }
+.suzukiSignalGrid article { background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.02)); border: 1px solid rgba(255,255,255,.1); min-height: 270px; padding: 28px; }
+.suzukiSignalGrid span { color: #f59b35; font-size: .72rem; font-weight: 950; }
+.suzukiSignalGrid h3 { font-size: 1.45rem; margin: 80px 0 12px; }
+.suzukiSignalGrid p { color: rgba(244,238,229,.6); font-size: .9rem; }
+
+.suzukiStrategy { align-items: end; background: #f5f1e9; color: #0a0b0d; display: grid; gap: 60px; grid-template-columns: .85fr 1.15fr; margin: 0 calc(clamp(20px, 5vw, 72px) * -1) clamp(100px, 13vw, 180px); padding: clamp(60px, 8vw, 110px) clamp(20px, 5vw, 72px); }
+.suzukiEngineGrid { display: grid; gap: 14px; }
+.suzukiEngineGrid article { background: #fff; border: 1px solid rgba(0,0,0,.12); padding: 30px; }
+.suzukiEngineGrid span { color: #e56f1f; font-size: .73rem; font-weight: 950; letter-spacing: .12em; }
+.suzukiEngineGrid h3 { font-size: 2rem; margin: 10px 0; }
+.suzukiEngineGrid p { color: rgba(0,0,0,.62); }
+.suzukiEngineGrid b { display: block; margin-top: 20px; text-transform: uppercase; }
+
+.suzukiArchitectureGrid { display: grid; gap: 12px; grid-template-columns: repeat(3, 1fr); }
+.suzukiArchitectureGrid article { background: #071425; border-top: 4px solid #2472ff; min-height: 290px; padding: 34px; }
+.suzukiArchitectureGrid span { color: #69a2ff; font-size: .78rem; font-weight: 950; letter-spacing: .14em; }
+.suzukiArchitectureGrid h3 { color: white; font-size: 1.8rem; margin: 72px 0 12px; }
+.suzukiArchitectureGrid p { color: rgba(255,255,255,.6); }
+.suzukiJourney { display: grid; grid-template-columns: repeat(6, 1fr); margin-top: 18px; }
+.suzukiJourney div { border-top: 1px solid rgba(255,255,255,.2); display: grid; gap: 12px; padding: 18px 8px; }
+.suzukiJourney span { color: #f59b35; font-size: .72rem; }
+.suzukiJourney strong { font-size: .82rem; text-transform: uppercase; }
+
+.suzukiPhoneGrid { display: grid; gap: clamp(18px, 3vw, 38px); grid-template-columns: repeat(3, 1fr); }
+.suzukiPhone { background: #f5f3ef; border: 9px solid #14171c; border-radius: 42px; box-shadow: 0 30px 70px rgba(0,0,0,.38); color: #11151c; min-height: 570px; overflow: hidden; padding: 12px 16px 18px; position: relative; }
+.suzukiPhone.success { background: #eff8f0; }
+.suzukiPhone.warning { background: #fff4e7; }
+.suzukiPhoneTop { align-items: center; display: flex; font-size: .62rem; font-weight: 900; justify-content: space-between; padding: 1px 10px 16px; }
+.suzukiPhoneTop i { background: #11151c; border-radius: 999px; height: 6px; width: 48px; }
+.suzukiPhoneBody { padding: 5px 8px 32px; }
+.suzukiPhoneLabel { color: #1c5ed3; font-size: .62rem; font-weight: 950; letter-spacing: .14em; margin-bottom: 28px; }
+.suzukiPhone h3 { font-size: clamp(1.7rem, 2.4vw, 2.35rem); line-height: 1; margin: 7px 0 14px; }
+.suzukiPhone p { color: rgba(17,21,28,.62); font-size: .82rem; }
+.suzukiPhone button { background: #155ee7; border: 0; border-radius: 999px; color: white; font-weight: 900; margin-top: 22px; padding: 13px 18px; width: 100%; }
+.suzukiPhoneHome { background: #11151c; border-radius: 99px; bottom: 9px; height: 4px; left: 38%; position: absolute; width: 24%; }
+.phoneHello { font-weight: 800; margin: 0; }
+.phoneHeroCard { background: linear-gradient(145deg, #0b2b66, #166be6); border-radius: 18px; color: white; display: grid; gap: 7px; margin: 24px 0 14px; padding: 22px; }
+.phoneHeroCard small, .phoneStatRow small { font-size: .58rem; font-weight: 950; letter-spacing: .12em; opacity: .7; }
+.phoneHeroCard strong { font-size: 1.55rem; }
+.phoneHeroCard span { font-size: .7rem; }
+.phoneStatus, .phoneInfo, .phoneReminder, .phoneRecovery, .phoneToggle { background: rgba(17,21,28,.06); border-radius: 14px; padding: 15px; }
+.phoneStatus { display: grid; gap: 3px; }
+.phoneStatus span, .phoneFootnote { color: rgba(17,21,28,.5); font-size: .68rem; }
+.phoneRoute { align-items: center; display: flex; margin: 46px 0; }
+.phoneRoute i { background: #155ee7; border-radius: 50%; color: white; display: grid; font-size: .48rem; font-style: normal; height: 42px; place-items: center; width: 42px; }
+.phoneRoute span { border-top: 2px dotted #155ee7; flex: 1; }
+.phoneStatRow { display: grid; gap: 10px; grid-template-columns: repeat(2, 1fr); }
+.phoneStatRow span { background: white; border-radius: 13px; display: grid; gap: 5px; padding: 14px; }
+.phoneReminder { margin-top: 13px; }
+.phoneReminder p { margin: 4px 0 0; }
+.phoneCarIcon, .phoneResultIcon { align-items: center; background: #155ee7; border-radius: 50%; color: white; display: flex; font-size: 1.8rem; font-weight: 950; height: 74px; justify-content: center; margin: 20px auto 28px; width: 74px; }
+.phoneStatusList { display: grid; gap: 1px; margin: 24px 0; }
+.phoneStatusList span { background: white; display: grid; gap: 3px; padding: 14px; }
+.phoneStatusList em { color: rgba(17,21,28,.54); font-size: .68rem; font-style: normal; }
+.suzukiCommandFlow { background: #07101e; margin: 0 calc(clamp(20px, 5vw, 72px) * -1) clamp(100px, 13vw, 180px); padding: clamp(65px, 9vw, 120px) clamp(20px, 5vw, 72px); }
+.suzukiCommandFlow .suzukiSectionHeading h2 { color: #fff; }
+.suzukiCommandFlow .suzukiSectionHeading > p:not(.streamLabel) { color: rgba(255,255,255,.68); }
+.phonePulse { border: 1px solid rgba(21,94,231,.2); border-radius: 50%; display: grid; height: 110px; margin: 45px auto; place-items: center; width: 110px; }
+.phonePulse span { animation: suzukiPulse 1.6s infinite; background: #155ee7; border-radius: 50%; height: 28px; width: 28px; }
+@keyframes suzukiPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(21,94,231,.3); } 50% { box-shadow: 0 0 0 28px rgba(21,94,231,0); } }
+.suzukiPhone.success .phoneResultIcon { background: #23834d; }
+.suzukiPhone.warning .phoneResultIcon { background: #dc7a22; }
+.phoneInfo { color: rgba(17,21,28,.62); font-size: .72rem; margin-top: 22px; }
+.phoneRecovery { display: grid; gap: 8px; margin-top: 14px; }
+.phoneRecovery span { font-size: .67rem; line-height: 1.5; }
+.suzukiCareGrid { align-items: center; display: grid; gap: clamp(20px, 4vw, 50px); grid-template-columns: 1.1fr .8fr .8fr; margin-bottom: clamp(100px, 13vw, 180px); }
+.suzukiCareCopy h2 { margin: 16px 0 24px; }
+.suzukiCareCopy > p:not(.streamLabel) { color: rgba(244,238,229,.65); }
+.phoneToggle { align-items: center; display: flex; justify-content: space-between; margin: 12px 0; }
+.phoneToggle span { display: grid; gap: 3px; }
+.phoneToggle small { color: rgba(17,21,28,.5); }
+.phoneToggle i { background: #d8d8d8; border-radius: 99px; height: 22px; position: relative; width: 40px; }
+.phoneToggle i::after { background: white; border-radius: 50%; content: ""; height: 16px; left: 3px; position: absolute; top: 3px; width: 16px; }
+
+.suzukiMetricGrid { display: grid; gap: 1px; grid-template-columns: repeat(3, 1fr); }
+.suzukiMetricGrid article { background: rgba(255,255,255,.055); min-height: 190px; padding: 26px; }
+.suzukiMetricGrid span { color: #f59b35; font-size: .72rem; font-weight: 950; }
+.suzukiMetricGrid h3 { font-size: 1.25rem; margin: 40px 0 7px; }
+.suzukiMetricGrid p { color: rgba(244,238,229,.58); font-size: .82rem; }
+.suzukiValidationGraphic { background: #f5f1e9; margin-top: 24px; padding: clamp(20px, 4vw, 50px); }
+.suzukiValidationGraphic img { display: block; margin: auto; max-height: 440px; max-width: 100%; object-fit: contain; }
+.suzukiDisclaimer { border-top: 1px solid rgba(255,255,255,.14); display: grid; gap: 10px; grid-template-columns: .35fr 1fr; padding-top: 28px; }
+.suzukiDisclaimer p { color: rgba(244,238,229,.5); font-size: .8rem; margin: 0; }
+
+[data-theme="light"] .suzukiEditorialBody > p, [data-theme="light"] .suzukiSectionHeading > p:not(.streamLabel), [data-theme="light"] .suzukiCareCopy > p:not(.streamLabel) { color: rgba(33,24,18,.68); }
+[data-theme="light"] .suzukiCapabilityGrid span, [data-theme="light"] .suzukiSignalGrid article, [data-theme="light"] .suzukiMetricGrid article { background: rgba(43,29,20,.055); border-color: rgba(43,29,20,.12); }
+[data-theme="light"] .suzukiSignalGrid p, [data-theme="light"] .suzukiMetricGrid p, [data-theme="light"] .suzukiDisclaimer p { color: rgba(33,24,18,.6); }
+[data-theme="light"] .suzukiEditorialBody > small { color: rgba(33,24,18,.48); }
+[data-theme="light"] .suzukiJourney div, [data-theme="light"] .suzukiDisclaimer { border-color: rgba(33,24,18,.16); }
+[data-theme="light"] .suzukiArchitectureGrid h3 { color: #fff; }
+[data-theme="light"] .suzukiArchitectureGrid p { color: rgba(255,255,255,.72); }
+[data-theme="light"] .suzukiCommandFlow .suzukiSectionHeading h2 { color: #fff; }
+[data-theme="light"] .suzukiCommandFlow .suzukiSectionHeading > p:not(.streamLabel) { color: rgba(255,255,255,.68); }
+[data-theme="light"] .suzukiCommandFlow .streamLabel { color: #f59b35; }
+
+/* Light mode keeps the Suzuki story within the portfolio's warm, bright palette. */
+[data-theme="light"] .suzukiHeroVisual {
+  background:
+    radial-gradient(circle at 78% 48%, rgba(37, 108, 232, 0.12), transparent 32%),
+    linear-gradient(135deg, #fffdf8 0%, #f4eee4 58%, #edf3fb 100%);
+  border-color: rgba(51, 33, 25, 0.14);
+  box-shadow: 0 28px 80px rgba(72, 49, 30, 0.09);
+}
+
+[data-theme="light"] .suzukiHeroCopy h2 { color: #17120e; }
+[data-theme="light"] .suzukiHeroCopy > p:not(.streamLabel) { color: rgba(51, 33, 25, 0.7); }
+[data-theme="light"] .suzukiHeroNote span { color: rgba(51, 33, 25, 0.5); }
+[data-theme="light"] .suzukiHeroNote strong { color: #17120e; }
+[data-theme="light"] .suzukiStageGlow { background: #e89a48; opacity: .13; }
+
+[data-theme="light"] .suzukiArchitectureGrid article {
+  background: #fffdf8;
+  border: 1px solid rgba(51, 33, 25, 0.13);
+  border-top: 4px solid #e58a2b;
+  box-shadow: 0 20px 48px rgba(72, 49, 30, 0.07);
+}
+
+[data-theme="light"] .suzukiArchitectureGrid span { color: #c96516; }
+[data-theme="light"] .suzukiArchitectureGrid h3 { color: #17120e; }
+[data-theme="light"] .suzukiArchitectureGrid p { color: rgba(51, 33, 25, 0.66); }
+
+[data-theme="light"] .suzukiCommandFlow {
+  background: linear-gradient(145deg, #f3ede3, #fffaf3);
+  border-bottom: 1px solid rgba(51, 33, 25, 0.1);
+  border-top: 1px solid rgba(51, 33, 25, 0.1);
+}
+
+[data-theme="light"] .suzukiCommandFlow .suzukiSectionHeading h2 { color: #17120e; }
+[data-theme="light"] .suzukiCommandFlow .suzukiSectionHeading > p:not(.streamLabel) { color: rgba(51, 33, 25, 0.66); }
+[data-theme="light"] .suzukiCommandFlow .streamLabel { color: #c96516; }
+[data-theme="light"] .suzukiCommandFlow .suzukiPhone {
+  border-color: #d8d1c7;
+  box-shadow: 0 24px 58px rgba(72, 49, 30, 0.13);
+}
+
+@media (max-width: 980px) {
+  .suzukiHeroVisual, .suzukiEditorial, .suzukiStrategy, .suzukiCareGrid { grid-template-columns: 1fr; }
+  .suzukiDeviceStage { min-height: 360px; }
+  .suzukiSignalGrid { grid-template-columns: repeat(2, 1fr); }
+  .suzukiPhoneGrid { gap: 16px; }
+  .suzukiPhone { border-width: 6px; border-radius: 30px; min-height: 530px; padding-left: 10px; padding-right: 10px; }
+  .suzukiCareGrid { grid-template-columns: 1fr 1fr; }
+  .suzukiCareCopy { grid-column: 1 / -1; }
+}
+
+@media (max-width: 720px) {
+  .suzukiStory { padding-left: 14px; padding-right: 14px; }
+  .suzukiHeroVisual { border-radius: 22px; min-height: 0; padding: 30px 20px; }
+  .suzukiDeviceStage { min-height: 280px; }
+  .suzukiMoments, .suzukiArchitectureGrid, .suzukiPhoneGrid, .suzukiCareGrid, .suzukiMetricGrid { grid-template-columns: 1fr; }
+  .suzukiMoments article { min-height: 0; }
+  .suzukiMoments p, .suzukiSignalGrid h3 { margin-top: 25px; }
+  .suzukiSignalGrid { grid-template-columns: 1fr; }
+  .suzukiSignalGrid article { min-height: 210px; }
+  .suzukiJourney { grid-template-columns: repeat(3, 1fr); }
+  .suzukiPhone { margin: auto; max-width: 380px; min-height: 560px; width: 100%; }
+  .suzukiStrategy, .suzukiCommandFlow { margin-left: -14px; margin-right: -14px; padding-left: 14px; padding-right: 14px; }
+  .suzukiDisclaimer { grid-template-columns: 1fr; }
 }
 
 .abStoryDeck {
@@ -3940,6 +4256,10 @@ h3 {
   box-shadow: 0 20px 52px rgba(214, 124, 54, 0.16);
 }
 
+[data-theme="light"] .designThumbPosition {
+  color: rgba(18, 16, 13, 0.56);
+}
+
 [data-theme="light"] .secondaryAction,
 [data-theme="light"] .innerBackButton,
 [data-theme="light"] .tagRow span,
@@ -4797,3 +5117,224 @@ h3 {
     transition: none;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Site-wide theme contract
+   Dark: near-black surfaces + warm light type.
+   Light: warm-white surfaces + near-black type.
+   Orange remains the single shared interaction accent.
+   -------------------------------------------------------------------------- */
+
+[data-theme="dark"] .videoCard {
+  background: #0d0c0b;
+  border-color: rgba(255, 247, 236, 0.13);
+  color: #fff7ec;
+}
+
+[data-theme="dark"] .videoText span { color: rgba(255, 247, 236, 0.62); }
+
+[data-theme="dark"] .mayBeFigmaFrame,
+[data-theme="dark"] .mayBeSystem,
+[data-theme="dark"] .suzukiMoments,
+[data-theme="dark"] .suzukiStrategy,
+[data-theme="dark"] .suzukiValidationGraphic {
+  background: #0b0a09;
+  border-color: rgba(255, 247, 236, 0.14);
+  color: #fff7ec;
+}
+
+[data-theme="dark"] .mayBeSystem .streamLabel,
+[data-theme="dark"] .mayBeSystemDetails article > span,
+[data-theme="dark"] .suzukiMoments span,
+[data-theme="dark"] .suzukiEngineGrid span {
+  color: #d8a45c;
+}
+
+[data-theme="dark"] .mayBeSystem .mayBeSectionHeading > p:not(.streamLabel),
+[data-theme="dark"] .mayBeSystemDetails p,
+[data-theme="dark"] .mayBePalette small,
+[data-theme="dark"] .suzukiMoments small,
+[data-theme="dark"] .suzukiEngineGrid p {
+  color: rgba(255, 247, 236, 0.66);
+}
+
+[data-theme="dark"] .mayBePalette > div,
+[data-theme="dark"] .mayBeSystemDetails article,
+[data-theme="dark"] .suzukiMoments article {
+  border-color: rgba(255, 247, 236, 0.14);
+}
+
+[data-theme="dark"] .suzukiMoments p { color: rgba(255, 247, 236, 0.5); }
+[data-theme="dark"] .suzukiMoments h3,
+[data-theme="dark"] .suzukiStrategy h2,
+[data-theme="dark"] .suzukiEngineGrid h3 { color: #fff7ec; }
+
+[data-theme="dark"] .suzukiEngineGrid article {
+  background: #12100e;
+  border-color: rgba(255, 247, 236, 0.13);
+}
+
+[data-theme="dark"] .suzukiEngineGrid b { color: #f0b76e; }
+
+[data-theme="dark"] .suzukiPhone,
+[data-theme="dark"] .suzukiPhone.success,
+[data-theme="dark"] .suzukiPhone.warning {
+  background: #11100f;
+  border-color: #282521;
+  color: #fff7ec;
+}
+
+[data-theme="dark"] .suzukiPhoneTop i,
+[data-theme="dark"] .suzukiPhoneHome { background: #f1e9df; }
+[data-theme="dark"] .suzukiPhone p,
+[data-theme="dark"] .phoneStatus span,
+[data-theme="dark"] .phoneFootnote,
+[data-theme="dark"] .phoneStatusList em,
+[data-theme="dark"] .phoneToggle small { color: rgba(255, 247, 236, 0.58); }
+[data-theme="dark"] .suzukiPhoneLabel { color: #e5a459; }
+[data-theme="dark"] .phoneStatus,
+[data-theme="dark"] .phoneInfo,
+[data-theme="dark"] .phoneReminder,
+[data-theme="dark"] .phoneRecovery,
+[data-theme="dark"] .phoneToggle,
+[data-theme="dark"] .phoneStatRow span,
+[data-theme="dark"] .phoneStatusList span {
+  background: rgba(255, 247, 236, 0.07);
+  color: #fff7ec;
+}
+
+[data-theme="dark"] .phoneToggle i { background: rgba(255, 247, 236, 0.22); }
+[data-theme="dark"] .phoneToggle i::after { background: #fff7ec; }
+
+.suzukiPhone button,
+.phoneRoute i,
+.phoneCarIcon,
+.phoneResultIcon {
+  background: #d67c36;
+}
+
+.phoneRoute span { border-color: #d67c36; }
+.phoneHeroCard { background: linear-gradient(145deg, #9f5223, #df8c42); }
+.suzukiPhone.success .phoneResultIcon { background: #5b8d68; }
+.suzukiPhone.warning .phoneResultIcon { background: #d67c36; }
+.phonePulse span { background: #d67c36; }
+
+[data-theme="dark"] .suzukiValidationGraphic img {
+  border-radius: 18px;
+  filter: brightness(0.82) contrast(1.06);
+}
+
+[data-theme="dark"] .appsPage {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(216, 164, 92, 0.13), transparent 30%),
+    radial-gradient(circle at 12% 30%, rgba(214, 124, 54, 0.08), transparent 28%),
+    #030303;
+  color: #fff7ec;
+}
+
+[data-theme="dark"] .appsNav { background: rgba(3, 3, 3, 0.76); }
+[data-theme="dark"] .appsHeroOrbOne {
+  background: radial-gradient(circle at 35% 30%, #ffd49a, #d67c36 42%, rgba(71, 34, 12, 0.08) 72%);
+  box-shadow: 0 0 100px rgba(216, 164, 92, 0.25);
+}
+[data-theme="dark"] .appsHeroOrbTwo { background: radial-gradient(circle, rgba(216, 164, 92, 0.52), rgba(95, 48, 19, 0.12) 65%, transparent 72%); }
+[data-theme="dark"] .appStoreCopy h3 { color: #efbd7d; }
+[data-theme="dark"] .appMetaRow i { color: rgba(216, 164, 92, 0.55); }
+
+[data-theme="light"] .caseStudyPage .abNarrativeCard,
+[data-theme="light"] .caseStudyPage .competitorPanel,
+[data-theme="light"] .caseStudyPage .originalStoryIntro,
+[data-theme="light"] .caseStudyPage .abMockScreen {
+  background: #fffaf2;
+  border-color: rgba(51, 33, 25, 0.12);
+  box-shadow: 0 22px 60px rgba(72, 49, 30, 0.1);
+  color: #15120f;
+}
+
+[data-theme="light"] .caseStudyPage .abNarrativeCard h2,
+[data-theme="light"] .caseStudyPage .abNarrativeCard h3,
+[data-theme="light"] .caseStudyPage .competitorPanel h2,
+[data-theme="light"] .caseStudyPage .originalStoryIntro h2,
+[data-theme="light"] .caseStudyPage .abMockScreen h3,
+[data-theme="light"] .caseStudyPage .competitorGrid em { color: #15120f; }
+
+[data-theme="light"] .caseStudyPage .abNarrativeCard p,
+[data-theme="light"] .caseStudyPage .competitorPanel p,
+[data-theme="light"] .caseStudyPage .originalStoryIntro p,
+[data-theme="light"] .caseStudyPage .abMockScreen p,
+[data-theme="light"] .caseStudyPage .mockRows span,
+[data-theme="light"] .caseStudyPage .competitorGrid span { color: rgba(51, 33, 25, 0.68); }
+
+[data-theme="light"] .caseStudyPage .competitorGrid a,
+[data-theme="light"] .caseStudyPage .abFactGrid span,
+[data-theme="light"] .caseStudyPage .mockRows span,
+[data-theme="light"] .caseStudyPage .mockStats span {
+  background: rgba(51, 33, 25, 0.055);
+  border-color: rgba(51, 33, 25, 0.1);
+  color: #15120f;
+}
+
+[data-theme="light"] .caseStudyPage .mockSidebar { background: #eee6dc; }
+[data-theme="light"] .caseStudyPage .mockSidebar small,
+[data-theme="light"] .caseStudyPage .mockSidebar b { color: rgba(51, 33, 25, 0.68); }
+
+[data-theme="light"] .appsPage {
+  background:
+    radial-gradient(circle at 84% 12%, rgba(216, 164, 92, 0.14), transparent 30%),
+    radial-gradient(circle at 12% 30%, rgba(214, 124, 54, 0.08), transparent 28%),
+    #f7f3ec;
+  color: #15120f;
+}
+
+[data-theme="light"] .appsNav { background: rgba(255, 252, 246, 0.84); }
+[data-theme="light"] .appsHeroOrbOne {
+  background: radial-gradient(circle at 35% 30%, #fff1dc, #e7a65f 44%, rgba(216, 164, 92, 0.05) 72%);
+  box-shadow: 0 0 90px rgba(216, 164, 92, 0.18);
+}
+[data-theme="light"] .appsHeroOrbTwo { background: radial-gradient(circle, rgba(216, 164, 92, 0.3), rgba(214, 124, 54, 0.08) 64%, transparent 72%); }
+[data-theme="light"] .appStoreCard { background: #fffaf2; border-color: rgba(51, 33, 25, 0.12); }
+[data-theme="light"] .appStoreVisual { background: #f0e9df; }
+[data-theme="light"] .appStoreCopy h3 { color: #a65426; }
+[data-theme="light"] .appMetaRow i { color: rgba(183, 100, 47, 0.55); }
+[data-theme="light"] .appStoreCopy > a,
+[data-theme="light"] .appsFooter button { background: #d67c36; color: #fffaf2; }
+
+[data-theme="light"] .appLaunchPage {
+  background:
+    radial-gradient(circle at 18% 16%, rgba(216, 164, 92, 0.17), transparent 30%),
+    radial-gradient(circle at 82% 78%, rgba(214, 124, 54, 0.08), transparent 34%),
+    #f7f3ec;
+  color: #15120f;
+}
+
+[data-theme="light"] .launchBrand,
+[data-theme="light"] .launchBack,
+[data-theme="light"] .launchStatus,
+[data-theme="light"] .launchProgressMeta { color: rgba(21, 18, 15, 0.68); }
+[data-theme="light"] .launchProgressTrack { background: rgba(21, 18, 15, 0.08); }
+[data-theme="light"] .launchFallbackActions a {
+  background: rgba(21, 18, 15, 0.06);
+  border-color: rgba(21, 18, 15, 0.13);
+  color: #15120f;
+}
+
+[data-theme="light"] .suzukiMoments,
+[data-theme="light"] .suzukiStrategy,
+[data-theme="light"] .suzukiValidationGraphic,
+[data-theme="light"] .mayBeFigmaFrame,
+[data-theme="light"] .mayBeSystem {
+  background: #fffaf2;
+  border-color: rgba(51, 33, 25, 0.12);
+  color: #15120f;
+}
+
+[data-theme="light"] .suzukiMoments article,
+[data-theme="light"] .mayBePalette > div,
+[data-theme="light"] .mayBeSystemDetails article { border-color: rgba(51, 33, 25, 0.14); }
+[data-theme="light"] .suzukiMoments h3,
+[data-theme="light"] .suzukiStrategy h2,
+[data-theme="light"] .suzukiEngineGrid h3 { color: #15120f; }
+[data-theme="light"] .suzukiMoments p { color: rgba(51, 33, 25, 0.52); }
+[data-theme="light"] .suzukiMoments small,
+[data-theme="light"] .suzukiEngineGrid p { color: rgba(51, 33, 25, 0.66); }
+[data-theme="light"] .suzukiEngineGrid article { background: #f7f1e8; }

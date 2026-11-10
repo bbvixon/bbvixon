@@ -68,6 +68,78 @@ export const designStories: DesignStory[] = [
     status: "ready",
   },
   {
+    slug: "suzuki-connect-one",
+    title: "Suzuki Connect ONE",
+    role: "Connected Car UX Case Study",
+    summary:
+      "A connected-car experience proposal that turns vehicle telemetry, remote commands, maintenance, and family sharing into information owners can understand and trust.",
+    outcome:
+      "The concept combines first-week discovery with a confidence layer for data freshness, honest command states, offline recovery, and clear vehicle-care pathways.",
+    tags: ["Connected car", "Trust UX", "Service design"],
+    thumbnailUrl: "/design/suzuki-connect-device-montage.png",
+    sections: [
+      {
+        eyebrow: "The opportunity",
+        title: "Connected should mean confident",
+        body:
+          "Suzuki Connect already offers live tracking, geofences, supported remote operations, vehicle-health information, trip history, and access through devices such as smartwatches and Alexa. Feature availability depends on the vehicle model and variant.\n\nThe case study asks how that capability can support two moments at once: helping new owners discover value during their first week, and helping returning owners trust the app during everyday use.",
+      },
+      {
+        eyebrow: "Customer evidence",
+        title: "The trust gap appears when data becomes uncertain",
+        body:
+          "Selected public app reviews and community discussions point to recurring friction: vehicle location or fuel information can appear stale, remote actions may fail without a clear recovery path, renewal can leave the app, and some owners experience a fragmented journey across separate products.\n\nThese signals informed the design direction. They are research inputs to validate, not claims that every owner encounters the same problems.",
+      },
+      {
+        eyebrow: "Market framing",
+        title: "Feature parity is crowded, so trust becomes the position",
+        body:
+          "Suzuki Connect has a strong functional baseline across remote operations, location, geofencing, health information, and trip behaviour. Hyundai Bluelink and Kia Connect show how competitors extend that baseline through deeper diagnostics, health reporting, valet privacy, profiles, calendar links, and connected navigation.\n\nThe proposal therefore focuses less on adding a longer feature list and more on making every important state recent, explainable, and recoverable.",
+      },
+      {
+        eyebrow: "Product strategy",
+        title: "Two engines support one ownership experience",
+        body:
+          "The discovery engine introduces My Suzuki Day, a calm pre-drive briefing that shows useful connected features from the start. The confidence engine adds timestamps, command acknowledgement, explicit unknown states, and practical recovery when connectivity fails.\n\nDiscovery gives owners a reason to try the product. Reliability gives them a reason to return.",
+        imageUrl: "/design/suzuki-connect-device-montage.png",
+        imageAlt: "Suzuki Connect shown across vehicle status, location, driving analytics, and vehicle health screens",
+      },
+      {
+        eyebrow: "Experience architecture",
+        title: "Ready, Live, and Care",
+        body:
+          "Ready prepares the next drive with saved destinations, departure context, range information when available, and reminders. Live communicates the freshness of vehicle data and separates a request from a confirmed action. Care translates verified vehicle signals into understandable maintenance information and guided support.\n\nTogether, these layers create one journey from first-week discovery to long-term ownership support.",
+      },
+      {
+        eyebrow: "Daily delight",
+        title: "My Suzuki Day makes the next drive easier",
+        body:
+          "The home experience answers three immediate questions: what matters today, whether the current vehicle status can be trusted, and what the owner should do next. A short departure briefing can surface a saved destination, planned departure, available range context, and reminders without turning the home screen into a dashboard.\n\nAll prototype trip and vehicle values are illustrative until connected to validated vehicle signals.",
+      },
+      {
+        eyebrow: "Live confidence",
+        title: "A request and a confirmation are different states",
+        body:
+          "Important telemetry carries both a timestamp and a confidence state. The interface distinguishes Locked from Last confirmed locked and shows when location data last reached the app.\n\nRemote commands remain pending until the vehicle acknowledges them. If the connection times out, the product says that the current state is unknown, preserves the last confirmed state, and offers safe next steps instead of presenting a false success message.",
+      },
+      {
+        eyebrow: "Care and consent",
+        title: "Support stays understandable and sharing stays controlled",
+        body:
+          "Vehicle care explains verified signals without inferring a mechanical diagnosis from missing data. Owners can review supporting information before deciding whether to book service.\n\nFamily Circle uses explicit permission for selected status, arrival, or support updates. The owner chooses what to share, with whom, and for how long, while permissions remain visible and editable.",
+      },
+      {
+        eyebrow: "Validation plan",
+        title: "Measure discovery, comprehension, and recovery",
+        body:
+          "The next step is to test which moments drive first-week activation, where stale data and remote commands damage trust, and which vehicle signals can be surfaced safely for each model and variant.\n\nSuccess measures include task completion, recognition of stale versus live data, acknowledged versus attempted commands, repeat support contacts after a failure, 30-day engagement, and renewal behaviour.",
+        imageUrl: "/design/suzuki-connect-validation.png",
+        imageAlt: "Validation questions for the Suzuki Connect ONE concept",
+      },
+    ],
+    status: "ready",
+  },
+  {
     slug: "spaid",
     title: "Spaid",
     role: "UX Case Study",
