@@ -156,6 +156,22 @@ export const designStories: DesignStory[] = [
     status: "ready",
   },
   {
+    slug: "ux-board",
+    title: "UX Board",
+    role: "AI Product UX Case Study",
+    summary:
+      "A human-guided workspace that turns a rough brief or public website into a reviewed, six-stage UX case study.",
+    outcome:
+      "UXB makes the design process visible through evidence-aware agents, approval gates, responsive artifacts, recoverable steps, and a designed PDF export.",
+    tags: ["AI Product", "Human-in-the-loop", "UX workflow"],
+    thumbnailUrl: "/design/uxb-pages/page-11.png",
+    documentUrl: "/design/uxb-case-study.pdf",
+    pageImages: Array.from({ length: 19 }, (_, index) =>
+      `/design/uxb-pages/page-${String(index + 1).padStart(2, "0")}.png`,
+    ),
+    status: "ready",
+  },
+  {
     slug: "playmore",
     title: "Playmore",
     role: "UX Story",
@@ -214,6 +230,19 @@ export const portfolioApps: PortfolioApp[] = [
     platform: "Figma Make",
     published: true,
     sortOrder: 1,
+  },
+  {
+    slug: "ux-board",
+    title: "UX Board",
+    tagline: "Build a UX case study one approved stage at a time.",
+    description:
+      "A human-guided product workflow for requirements, competitors, personas, wireframes, design systems, and the final UX story.",
+    url: "https://ux-board.roundupmemes01.workers.dev/",
+    iconUrl: "/apps/uxb-icon.svg",
+    category: "UX workflow",
+    platform: "Web app",
+    published: true,
+    sortOrder: 2,
   },
 ];
 
