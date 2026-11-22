@@ -1845,8 +1845,8 @@ function App() {
           <h2>User stories and product design</h2>
           <p>
             Selected user stories from Basil's portfolio, presented as focused case-study thumbnails.
-            Explore may.be, Spaid, Playmore, and AB Pharma through focused case studies, design
-            documents, and editable Figma work.
+            Explore product concepts, connected experiences, AI workflows, service journeys, and
+            enterprise tools through visual case studies and design documents.
           </p>
           <a className="textLink" href={links.designStories} target="_blank" rel="noreferrer">
             Current user stories

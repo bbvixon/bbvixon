@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">UX Board</title>
+  <description id="description">Minimal UXB app icon in dark green and lime</description>
+  <rect width="512" height="512" rx="120" fill="#122219"/>
+  <text x="256" y="270" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="150" font-weight="800" text-anchor="middle">UXB</text>
+  <g transform="translate(123 325)">
+    <circle cx="0" cy="0" r="18" fill="#D9FF66"/>
+    <circle cx="53" cy="0" r="18" fill="#F3D968"/>
+    <circle cx="106" cy="0" r="18" fill="#D8E6FF"/>
+    <circle cx="159" cy="0" r="18" fill="#D8D1FF"/>
+    <circle cx="212" cy="0" r="18" fill="#F2CFE6"/>
+    <circle cx="265" cy="0" r="18" fill="#CDEEE2"/>
+  </g>
+</svg>
